@@ -27,6 +27,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            buildConfigField "String", "CLIENT_ID", "\"d30447b72b@nk-company-2019.accelo.com\""
+            buildConfigField "String", "CLIENT_SECRET", "\"qH9q~noBJRegpEtKHjF2S8Czw98OJDYx\""
+
+        }
     }
 }
 
