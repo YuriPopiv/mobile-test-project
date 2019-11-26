@@ -20,6 +20,17 @@
 
         <activity android:name=".ui.auth.ActivityDeployment"/>
         <activity android:name=".ui.auth.AuthActivity"/>
+        <activity android:name=".ui.auth.TokenActivity"
+            android:launchMode="singleTop">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="accelo"/>
+
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
