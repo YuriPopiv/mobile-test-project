@@ -53,14 +53,6 @@ class ViewModelFactory @Inject constructor(
     }
 }
 
-@Module
-internal abstract class ViewModelBuilder {
-    @Binds
-    internal abstract fun bindViewModelFactory(
-        factory: ViewModelFactory
-    ): ViewModelProvider.Factory
-}
-
 @Target(
     AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER
 )

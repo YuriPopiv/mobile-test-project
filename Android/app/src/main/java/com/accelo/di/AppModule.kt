@@ -6,6 +6,7 @@ import com.accelo.data.AcceloAuthInterceptor
 import com.accelo.data.LocalDataSource
 import com.accelo.data.api.AcceloService
 import com.google.gson.GsonBuilder
+import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,6 +19,7 @@ import javax.inject.Singleton
 /**
  * Created by Yuri Popiv on 11/26/2019.
  */
+@Module
 class AppModule {
     @Singleton
     @Provides

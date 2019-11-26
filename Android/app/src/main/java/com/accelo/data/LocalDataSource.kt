@@ -16,12 +16,21 @@ class LocalDataSource @Inject constructor(private val prefs: SharedPreferences) 
         prefs.edit { putString(KEY_USER_TOKEN, value) }
     }
 
+    private var _deployment: String? = prefs.getString(KEY_DEPLOYMENT, null)
+
+    var deployment: String? = _deployment
+        set(value) {
+            prefs.edit { putString(KEY_DEPLOYMENT, value) }
+        }
+
     fun clearData(){
         prefs.edit { KEY_USER_TOKEN to null }
+        prefs.edit { KEY_DEPLOYMENT to null }
         accessToken = null
     }
 
     companion object {
         const val KEY_USER_TOKEN = "KEY_USER_TOKEN"
+        const val KEY_DEPLOYMENT = "KEY_DEPLOYMENT"
     }
 }

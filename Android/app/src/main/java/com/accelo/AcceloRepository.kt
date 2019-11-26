@@ -2,7 +2,6 @@ package com.accelo
 
 import com.accelo.data.LocalDataSource
 import com.accelo.data.api.AcceloService
-import com.accelo.data.model.ActivityData
 import com.accelo.data.response.ActivityResponse
 import com.accelo.data.response.UserResponse
 import io.reactivex.Single
@@ -16,9 +15,15 @@ class AcceloRepository  @Inject constructor(
     private val service: AcceloService
 ){
 
+    private val url = "https://${localDataSource.deployment}.api.accelo.com/"
+
+    fun saveDeploymentName(deployment: String){
+        localDataSource.deployment = deployment
+
+    }
 
     fun getToken(code: String) : Single<UserResponse> {
-        return service.get(code)
+        return service.getToken(url, code)
             .doOnSuccess {
             localDataSource.accessToken = it.accessToken
         }
@@ -28,7 +33,7 @@ class AcceloRepository  @Inject constructor(
         fields: String,
         limit: Int
     ): Single<ActivityResponse> {
-        return service.getListActivity(fields, limit)
+        return service.getListActivity(url, fields, limit)
     }
 
 }
