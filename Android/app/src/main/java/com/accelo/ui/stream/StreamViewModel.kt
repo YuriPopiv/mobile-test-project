@@ -3,12 +3,13 @@ package com.accelo.ui.stream
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.accelo.AcceloRepository
+import com.accelo.data.AcceloRepository
 import com.accelo.data.response.ActivityResponse
 import com.accelo.util.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -24,8 +25,8 @@ class StreamViewModel @Inject constructor(
     val activityData: LiveData<Event<ActivityResponse>> get() = _activityData
     private val _activityData = MutableLiveData<Event<ActivityResponse>>()
 
-    val snackbarMessage: LiveData<String> get() = _snackbarMessage
-    private val _snackbarMessage = MutableLiveData<String>()
+    val snackbarMessage: LiveData<Event<String>> get() = _snackbarMessage
+    private val _snackbarMessage = MutableLiveData<Event<String>>()
 
     fun getActivities() {
 
@@ -36,8 +37,8 @@ class StreamViewModel @Inject constructor(
                 { data: ActivityResponse? ->
                     _activityData.postValue(Event(data!!))
                 }, { t ->
-                    _snackbarMessage.postValue(t.localizedMessage)
-                    t.printStackTrace()
+                    Timber.e(t)
+                    _snackbarMessage.postValue(Event(t.localizedMessage))
                 })
         )
 
