@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.accelo.ui.stream.StreamViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            style="@style/Widget.Design.AppBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="Create Activity"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/deployment"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:layout_margin="@dimen/margin_normal"
+                    android:text="nk-company-2019"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/edittext_background"
+                    android:padding="@dimen/spacing_normal"/>
+
+                <EditText
+                    android:id="@+id/body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="300dp"
+                    android:hint="@string/deployment"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:layout_margin="@dimen/margin_normal"
+                    android:text="nk-company-2019"
+                    android:gravity="start|top"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/edittext_background"
+                    android:padding="@dimen/spacing_normal"
+                    tools:text="This was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbarThis was a surprise to me. I was expecting the view to be dynamically resized as the toolbar"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorPrimary"
+            app:visibleUnless="@{viewModel.isLoading}" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
