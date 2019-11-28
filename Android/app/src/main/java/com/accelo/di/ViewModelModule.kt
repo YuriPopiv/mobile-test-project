@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.accelo.ui.auth.AuthViewModel
 import com.accelo.ui.auth.TokenViewModel
+import com.accelo.ui.launcher.LauncherViewModel
 import com.accelo.ui.stream.StreamViewModel
 import dagger.Binds
 import dagger.Module
@@ -28,7 +29,12 @@ internal abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(StreamViewModel::class)
-    abstract fun bindAuthViewModel(viewModel: StreamViewModel): ViewModel
+    abstract fun bindStreamViewModell(viewModel: StreamViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LauncherViewModel::class)
+    abstract fun bindLauncherViewModel(viewModel: LauncherViewModel): ViewModel
 
 
     @Binds

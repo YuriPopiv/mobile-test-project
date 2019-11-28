@@ -1,14 +1,16 @@
 package com.accelo.ui.auth
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.accelo.AcceloRepository
+import com.accelo.data.AcceloRepository
 import com.accelo.data.response.UserResponse
 import com.accelo.util.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -23,8 +25,8 @@ class TokenViewModel@Inject constructor(
     val userResponse: LiveData<Event<UserResponse>> get() = _tokenResponse
     private val _tokenResponse = MutableLiveData<Event<UserResponse>>()
 
-    val snackbarMessage: LiveData<String> get() = _snackbarMessage
-    private val _snackbarMessage = MutableLiveData<String>()
+    val snackbarMessage: LiveData<Event<String>> get() = _snackbarMessage
+    private val _snackbarMessage = MutableLiveData<Event<String>>()
 
     fun getToken(code: String) {
 
@@ -35,8 +37,8 @@ class TokenViewModel@Inject constructor(
                 val token = response.accessToken
                 _tokenResponse.postValue(Event(response))
             },{ t ->
-                _snackbarMessage.postValue(t.localizedMessage)
-                t.printStackTrace()
+                _snackbarMessage.postValue(Event(t.localizedMessage))
+                Timber.e(t)
             }))
 
     }

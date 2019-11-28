@@ -1,4 +1,4 @@
-package com.accelo
+package com.accelo.data
 
 import com.accelo.data.LocalDataSource
 import com.accelo.data.api.AcceloService
@@ -23,7 +23,7 @@ class AcceloRepository  @Inject constructor(
     }
 
     fun getToken(code: String) : Single<UserResponse> {
-        return service.getToken(url, code)
+        return service.getToken(code)
             .doOnSuccess {
             localDataSource.accessToken = it.accessToken
         }
@@ -33,7 +33,7 @@ class AcceloRepository  @Inject constructor(
         fields: String,
         limit: Int
     ): Single<ActivityResponse> {
-        return service.getListActivity(url, fields, limit)
+        return service.getListActivity(fields, limit)
     }
 
 }

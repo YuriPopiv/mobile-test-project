@@ -11,7 +11,7 @@ import com.accelo.util.AcceloConstants
 /**
  * Created by Yuri Popiv on 11/26/2019.
  */
-class ActivityDeployment : AppCompatActivity() {
+class DeploymentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

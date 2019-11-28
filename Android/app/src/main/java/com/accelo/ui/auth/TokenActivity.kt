@@ -1,10 +1,14 @@
 package com.accelo.ui.auth
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.accelo.ui.stream.StreamActivity
 import com.accelo.util.EventObserver
 import com.accelo.util.viewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -25,7 +29,11 @@ class TokenActivity: DaggerAppCompatActivity() {
         viewModel.getToken(code!!)
 
         viewModel.userResponse.observe(this, EventObserver{
-            //startActivity(Intent(this, StreamActivity::class.java))
+            startActivity(Intent(this, StreamActivity::class.java))
+        })
+
+        viewModel.snackbarMessage.observe(this, EventObserver{
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         })
     }
 

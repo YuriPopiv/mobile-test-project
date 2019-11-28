@@ -33,8 +33,8 @@ class AppModule {
             .addInterceptor(AcceloAuthInterceptor(localDataSource))
             .build()
         return Retrofit.Builder()
-            //will be dynamic
-            //.baseUrl("https://wisetest.api.accelo.com/")
+            //TODO should be dynamic
+            .baseUrl("https://nk-company-2019.api.accelo.com/")
             .client(client)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(

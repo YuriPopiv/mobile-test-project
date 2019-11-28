@@ -14,6 +14,7 @@ class LocalDataSource @Inject constructor(private val prefs: SharedPreferences) 
     var accessToken: String? = _accessToken
     set(value) {
         prefs.edit { putString(KEY_USER_TOKEN, value) }
+        field = value
     }
 
     private var _deployment: String? = prefs.getString(KEY_DEPLOYMENT, null)
@@ -21,6 +22,7 @@ class LocalDataSource @Inject constructor(private val prefs: SharedPreferences) 
     var deployment: String? = _deployment
         set(value) {
             prefs.edit { putString(KEY_DEPLOYMENT, value) }
+            field = value
         }
 
     fun clearData(){

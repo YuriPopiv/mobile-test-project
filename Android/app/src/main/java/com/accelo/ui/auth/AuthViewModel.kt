@@ -3,12 +3,7 @@ package com.accelo.ui.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.accelo.AcceloRepository
-import com.accelo.data.response.UserResponse
-import com.accelo.util.Event
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import com.accelo.data.AcceloRepository
 import javax.inject.Inject
 
 /**
