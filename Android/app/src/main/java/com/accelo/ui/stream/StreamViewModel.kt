@@ -1,6 +1,7 @@
 package com.accelo.ui.stream
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.accelo.data.AcceloRepository
@@ -28,11 +29,22 @@ class StreamViewModel @Inject constructor(
     val snackbarMessage: LiveData<Event<String>> get() = _snackbarMessage
     private val _snackbarMessage = MutableLiveData<Event<String>>()
 
+    val isLoading: LiveData<Boolean> get() = _isLoading
+    private val _isLoading = MutableLiveData(true)
+
+    val isRefreshing: LiveData<Boolean> get() = _isRefreshing
+    private val _isRefreshing = MutableLiveData(false)
+
+    private val _isEmpty = MediatorLiveData<Boolean>()
+    val isEmpty: LiveData<Boolean> = _isEmpty
+
     fun getActivities() {
 
         subscription.add(repo.getListActivity("interacts,date_logged,preview_body", 20)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { _isLoading.postValue(true) }
+            .doFinally { _isLoading.postValue(false) }
             .subscribe(
                 { data: ActivityResponse? ->
                     _activityData.postValue(Event(data!!))
@@ -42,6 +54,48 @@ class StreamViewModel @Inject constructor(
                 })
         )
 
+    }
+
+    fun onSwipeRefresh(){
+        subscription.add(repo.getListActivity("interacts,date_logged,preview_body", 20)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { _isRefreshing.postValue(true) }
+            .doFinally { _isRefreshing.postValue(false) }
+            .subscribe(
+                { data: ActivityResponse? ->
+                    if (data == null || data.response?.threads.isNullOrEmpty()){
+                        _isEmpty.postValue(true)
+                    }else{
+                        _isEmpty.postValue(false)
+                        _activityData.postValue(Event(data))
+                    }
+                }, { t ->
+                    Timber.e(t)
+                    _snackbarMessage.postValue(Event(t.localizedMessage))
+                })
+        )
+    }
+
+    fun search(query: String){
+        subscription.add(repo.search("interacts,date_logged,preview_body", query)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { _isLoading.postValue(true) }
+            .doFinally { _isLoading.postValue(false) }
+            .subscribe(
+                { data: ActivityResponse? ->
+                    if (data == null || data.response?.threads.isNullOrEmpty()){
+                        _isEmpty.postValue(true)
+                    }else{
+                        _isEmpty.postValue(false)
+                        _activityData.postValue(Event(data))
+                    }
+                }, { t ->
+                    Timber.e(t)
+                    _snackbarMessage.postValue(Event(t.localizedMessage))
+                })
+        )
     }
 
     override fun onCleared() {

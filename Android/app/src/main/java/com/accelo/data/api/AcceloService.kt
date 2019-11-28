@@ -26,4 +26,11 @@ interface AcceloService {
     ): Single<ActivityResponse>
 
 
+    @GET("api/v0/activities/threads")
+    fun search(
+        @Query("_fields") fields: String,
+        @Query("q") query: String
+    ): Single<ActivityResponse>
+
+
 }

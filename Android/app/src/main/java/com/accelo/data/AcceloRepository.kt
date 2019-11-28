@@ -36,4 +36,11 @@ class AcceloRepository  @Inject constructor(
         return service.getListActivity(fields, limit)
     }
 
+    fun search(
+        fields: String,
+        query: String
+    ): Single<ActivityResponse> {
+        return service.search(fields, query)
+    }
+
 }
