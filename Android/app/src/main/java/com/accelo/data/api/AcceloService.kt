@@ -1,7 +1,8 @@
 package com.accelo.data.api
 
-import com.accelo.data.response.ActivityResponse
-import com.accelo.data.response.CreateActivityResponse
+import com.accelo.data.base.ResponseModel
+import com.accelo.data.model.ActivityData
+import com.accelo.data.model.CreatePostData
 import com.accelo.data.response.UserResponse
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -17,7 +18,6 @@ interface AcceloService {
     fun getToken(
         @Query("code") code: String,
         @Query("grant_type") type: String = "authorization_code"
-
     ): Single<UserResponse>
 
     @POST("api/v0/activities?")
@@ -29,22 +29,22 @@ interface AcceloService {
         @Query("visibility") visibility: String,
         @Query("subject") subject: String,
         @Query("body") body: String
-    ): Single<CreateActivityResponse>
+    ): Single<ResponseModel<CreatePostData>>
 
     @GET("api/v0/activities/threads")
     fun getListActivity(
         @Query("_fields") fields: String,
         @Query("_limit") limit: Int
-    ): Single<ActivityResponse>
+    ): Single<ResponseModel<ActivityData>>
 
 
     @GET("api/v0/activities/threads")
     fun search(
         @Query("_fields") fields: String,
         @Query("q") query: String
-    ): Single<ActivityResponse>
+    ): Single<ResponseModel<ActivityData>>
 
-    companion object{
+    companion object {
         //Mock data for createActivity()
         const val AGAINST_ID = 47
         const val AGAINST_TYPE = "task"

@@ -1,12 +1,10 @@
 package com.accelo.ui.create
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.accelo.data.AcceloRepository
-import com.accelo.data.response.ActivityResponse
-import com.accelo.data.response.CreateActivityResponse
+import com.accelo.data.model.CreatePostData
 import com.accelo.util.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,8 +21,8 @@ class CreateViewModel @Inject constructor(
 
     private val subscription: CompositeDisposable = CompositeDisposable()
 
-    val activityData: LiveData<Event<CreateActivityResponse>> get() = _activityData
-    private val _activityData = MutableLiveData<Event<CreateActivityResponse>>()
+    val activityData: LiveData<Event<CreatePostData>> get() = _activityData
+    private val _activityData = MutableLiveData<Event<CreatePostData>>()
 
     val snackbarMessage: LiveData<Event<String>> get() = _snackbarMessage
     private val _snackbarMessage = MutableLiveData<Event<String>>()
