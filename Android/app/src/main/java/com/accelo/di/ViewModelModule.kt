@@ -7,6 +7,7 @@ import com.accelo.ui.auth.TokenViewModel
 import com.accelo.ui.create.CreateViewModel
 import com.accelo.ui.launcher.LauncherViewModel
 import com.accelo.ui.stream.StreamViewModel
+import com.accelo.ui.view.ViewActivityViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -46,5 +47,10 @@ internal abstract class ViewModelModule {
     @Binds
     internal abstract fun bindViewModelFactory(
         factory: ViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ViewActivityViewModel::class)
+    internal abstract fun bindViewActivityViewModel(viewModel: ViewActivityViewModel): ViewModel
 
 }

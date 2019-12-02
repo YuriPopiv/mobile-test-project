@@ -5,5 +5,11 @@
     <string name="send">Send</string>
     <string name="create_activity">Create Activity</string>
     <string name="body">Body</string>
-    <string name="subject">Subject</string>
+    <string name="subject">Subject:</string>
+
+    <!--Toolbar titles-->
+    <string name="activity_info">Activity info details</string>
+
+    <!--Mocked strings-->
+    <string name="loreem_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed pretium nisl, in bibendum augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi a mi nulla. Donec aliquam nunc leo. Morbi eu nibh id urna placerat mattis at non felis. Maecenas nec semper justo. Duis justo eros, pellentesque eu euismod eget, feugiat a metus.</string>
 </resources>

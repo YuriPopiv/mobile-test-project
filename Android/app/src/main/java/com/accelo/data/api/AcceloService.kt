@@ -3,10 +3,12 @@ package com.accelo.data.api
 import com.accelo.data.base.ResponseModel
 import com.accelo.data.model.ActivityData
 import com.accelo.data.model.CreatePostData
+import com.accelo.data.model.FullActivity
 import com.accelo.data.response.UserResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -43,6 +45,10 @@ interface AcceloService {
         @Query("_fields") fields: String,
         @Query("q") query: String
     ): Single<ResponseModel<ActivityData>>
+
+    @GET("api/v0/activities/{activityId}")
+    fun getFullActivity(@Path("activityId") activityId: String,
+                        @Query("_fields") fields: String) : Single<ResponseModel<FullActivity>>
 
     companion object {
         //Mock data for createActivity()

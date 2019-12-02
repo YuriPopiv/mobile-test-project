@@ -8,6 +8,7 @@ import com.accelo.data.api.AcceloService.Companion.OWNER_TYPE
 import com.accelo.data.api.AcceloService.Companion.VISIBILITY
 import com.accelo.data.model.ActivityData
 import com.accelo.data.model.CreatePostData
+import com.accelo.data.model.FullActivity
 import com.accelo.data.response.UserResponse
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -56,6 +57,12 @@ class AcceloRepository @Inject constructor(
         query: String
     ): Single<ActivityData> {
         return service.search(fields, query)
+            .map { it.response }
+    }
+
+    fun getFullActivity(activityId: String): Single<FullActivity> {
+        val fields = "id,html_body,interacts, date_logged"
+        return service.getFullActivity(activityId, fields)
             .map { it.response }
     }
 
