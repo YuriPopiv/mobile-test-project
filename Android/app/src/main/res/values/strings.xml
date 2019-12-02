@@ -9,6 +9,11 @@
 
     <!--Toolbar titles-->
     <string name="activity_info">Activity info details</string>
+    
+    <!--Dialog-->
+    <string name="confidential_activity">Confidential activity</string>
+    <string name="confidential_message">This activity is confidential. You are not able to see it.</string>
+    <string name="ok">Ok</string>
 
     <!--Mocked strings-->
     <string name="loreem_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed pretium nisl, in bibendum augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi a mi nulla. Donec aliquam nunc leo. Morbi eu nibh id urna placerat mattis at non felis. Maecenas nec semper justo. Duis justo eros, pellentesque eu euismod eget, feugiat a metus.</string>

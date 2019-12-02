@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -44,11 +45,15 @@ class StreamActivity : DaggerAppCompatActivity() {
         val adapter = StreamAdapter { item ->
             Timber.d("Activity Id: ${item.activities?.get(0)}")
 
-            startActivity(item.activities?.first()?.id?.let {
-                ViewActivity.launchActivity(this@StreamActivity,
-                    it
-                )
-            })
+            val activity = item.activities?.first()
+
+            activity?.let {
+                if (it.confidential == 1) {
+                    showConfidentialDialog()
+                } else {
+                    startActivity(ViewActivity.launchActivity(this@StreamActivity, it.id!!))
+                }
+            }
         }
 
         binding.searchView.apply {
@@ -82,6 +87,18 @@ class StreamActivity : DaggerAppCompatActivity() {
         viewModel.snackbarMessage.observe(this, EventObserver {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
         })
+    }
+
+    private fun showConfidentialDialog() {
+        val alertDialog = AlertDialog.Builder(this).create()
+        alertDialog.setTitle(getString(R.string.confidential_activity))
+        alertDialog.setMessage(getString(R.string.confidential_message))
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok)) { dialogInterface, i ->
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
     }
 
     private fun showKeyboard(view: View) {
