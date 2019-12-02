@@ -13,6 +13,7 @@ import com.accelo.R
 import com.accelo.data.model.Activity
 import com.accelo.data.model.Owner
 import com.accelo.data.model.Thread
+import com.accelo.util.DateUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,8 +57,7 @@ class StreamAdapter(
 
             activity?.apply {
                 userName.text = from?.ownerName
-                date.text =
-                    SimpleDateFormat("dd,MMM,yyy").format(Date(dateLogged!!.toLong() * 1000))
+                date.text = DateUtil.getTimeFromTimeStamp(dateLogged!!.toLong())
                 title.text = subject
                 content.text = previewBody
                 var interracters = ""

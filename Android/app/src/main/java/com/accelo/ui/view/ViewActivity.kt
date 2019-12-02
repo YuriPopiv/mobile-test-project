@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.accelo.R
 import com.accelo.data.model.FullActivity
 import com.accelo.databinding.ActivityViewBinding
+import com.accelo.util.DateUtil.getTimeFromTimeStamp
 import com.accelo.util.EventObserver
 import com.accelo.util.viewModelProvider
 import dagger.android.support.DaggerAppCompatActivity
@@ -35,12 +36,15 @@ class ViewActivity : DaggerAppCompatActivity() {
 
         viewModel = viewModelProvider(factory)
 
+        binding.lifecycleOwner = this@ViewActivity
+        binding.viewModel = this@ViewActivity.viewModel
+
         // Set up ActionBar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        viewModel.getFullActivity(intent.getStringExtra(ACTIVITY_ID))
+        viewModel.getFullActivity(intent.getStringExtra(ACTIVITY_ID)!!)
 
         viewModel.fullActivityResponse.observe(this, EventObserver {
             setActivityInfo(it)
@@ -70,13 +74,6 @@ class ViewActivity : DaggerAppCompatActivity() {
             binding.body.text = Html.fromHtml(fullActivityResponse.htmlBody)
         }
     }
-
-    private fun getTimeFromTimeStamp(time: Long): String {
-        val date = Date(time * 1000)
-        val format = SimpleDateFormat("dd MMM yyy", Locale.getDefault())
-        return format.format(date)
-    }
-
 
     companion object {
         const val ACTIVITY_ID = "activityId"
