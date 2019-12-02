@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/send"
-        android:title="Send"
-        android:visible="true"
+        android:title="@string/send"
+        android:contentDescription="@string/send"
         app:showAsAction="always" />
 </menu>

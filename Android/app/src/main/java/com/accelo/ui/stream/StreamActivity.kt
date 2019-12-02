@@ -1,6 +1,7 @@
 package com.accelo.ui.stream
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.accelo.R
 import com.accelo.databinding.ActivityStreamBinding
+import com.accelo.ui.create.CreateActivity
 import com.accelo.util.EventObserver
 import com.accelo.util.viewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -57,6 +59,10 @@ class StreamActivity : DaggerAppCompatActivity() {
                 }
 
             })
+        }
+
+        binding.createActivity.setOnClickListener {
+            startActivity(Intent(this, CreateActivity::class.java))
         }
 
         val recyclerView = binding.recyclerView

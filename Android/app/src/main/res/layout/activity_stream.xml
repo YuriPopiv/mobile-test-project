@@ -39,12 +39,12 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             app:onRefreshListener="@{() -> viewModel.onSwipeRefresh()}"
             app:refreshing="@{viewModel.isRefreshing}">
-
 
 
             <FrameLayout
@@ -69,6 +69,18 @@
 
             </FrameLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/create_activity"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/margin_normal"
+            android:contentDescription="@string/create_activity"
+            app:srcCompat="@drawable/ic_create_activity"
+            app:tint="@android:color/white"/>
+
 
         <ProgressBar
             android:id="@+id/loading"

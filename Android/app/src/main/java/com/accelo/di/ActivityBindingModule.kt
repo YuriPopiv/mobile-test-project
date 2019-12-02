@@ -2,6 +2,7 @@ package com.accelo.di
 
 import com.accelo.ui.auth.AuthActivity
 import com.accelo.ui.auth.TokenActivity
+import com.accelo.ui.create.CreateActivity
 import com.accelo.ui.launcher.LauncherActivity
 import com.accelo.ui.stream.StreamActivity
 import dagger.Module
@@ -24,4 +25,7 @@ internal abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = [ViewModelModule::class])
     abstract fun contributeLauncherActivity(): LauncherActivity
+
+    @ContributesAndroidInjector(modules = [ViewModelModule::class])
+    abstract fun contributeCreateActivity(): CreateActivity
 }

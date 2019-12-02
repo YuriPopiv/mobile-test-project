@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.accelo.ui.stream.StreamViewModel" />
+            type="com.accelo.ui.create.CreateViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -43,10 +43,9 @@
                     android:id="@+id/subject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/deployment"
+                    android:hint="@string/subject"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:layout_margin="@dimen/margin_normal"
-                    android:text="nk-company-2019"
                     app:layout_constraintTop_toTopOf="parent"
                     android:background="@drawable/edittext_background"
                     android:padding="@dimen/spacing_normal"/>
@@ -56,10 +55,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="300dp"
-                    android:hint="@string/deployment"
+                    android:hint="@string/body"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:layout_margin="@dimen/margin_normal"
-                    android:text="nk-company-2019"
                     android:gravity="start|top"
                     app:layout_constraintTop_toTopOf="parent"
                     android:background="@drawable/edittext_background"
