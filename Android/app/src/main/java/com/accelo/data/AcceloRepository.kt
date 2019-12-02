@@ -1,14 +1,13 @@
 package com.accelo.data
 
-import com.accelo.data.LocalDataSource
 import com.accelo.data.api.AcceloService
 import com.accelo.data.api.AcceloService.Companion.AGAINST_ID
 import com.accelo.data.api.AcceloService.Companion.AGAINST_TYPE
 import com.accelo.data.api.AcceloService.Companion.MEDIUM
 import com.accelo.data.api.AcceloService.Companion.OWNER_TYPE
 import com.accelo.data.api.AcceloService.Companion.VISIBILITY
-import com.accelo.data.response.ActivityResponse
-import com.accelo.data.response.CreateActivityResponse
+import com.accelo.data.model.ActivityData
+import com.accelo.data.model.CreatePostData
 import com.accelo.data.response.UserResponse
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -37,23 +36,27 @@ class AcceloRepository @Inject constructor(
             }
     }
 
-    fun createActivity(subject: String, body: String): Single<CreateActivityResponse>{
+    fun createActivity(subject: String, body: String): Single<CreatePostData> {
         return service.createActivity(
-            AGAINST_ID, AGAINST_TYPE, MEDIUM, OWNER_TYPE, VISIBILITY, subject, body)
+            AGAINST_ID, AGAINST_TYPE, MEDIUM, OWNER_TYPE, VISIBILITY, subject, body
+        )
+            .map { it.response }
     }
 
     fun getListActivity(
         fields: String,
         limit: Int
-    ): Single<ActivityResponse> {
+    ): Single<ActivityData> {
         return service.getListActivity(fields, limit)
+            .map { it.response }
     }
 
     fun search(
         fields: String,
         query: String
-    ): Single<ActivityResponse> {
+    ): Single<ActivityData> {
         return service.search(fields, query)
+            .map { it.response }
     }
 
 }

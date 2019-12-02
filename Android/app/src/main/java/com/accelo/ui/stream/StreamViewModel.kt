@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.accelo.data.AcceloRepository
+import com.accelo.data.model.ActivityData
 import com.accelo.data.response.ActivityResponse
 import com.accelo.util.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,8 +24,8 @@ class StreamViewModel @Inject constructor(
     private val subscription: CompositeDisposable = CompositeDisposable()
 
 
-    val activityData: LiveData<Event<ActivityResponse>> get() = _activityData
-    private val _activityData = MutableLiveData<Event<ActivityResponse>>()
+    val activityData: LiveData<Event<ActivityData>> get() = _activityData
+    private val _activityData = MutableLiveData<Event<ActivityData>>()
 
     val snackbarMessage: LiveData<Event<String>> get() = _snackbarMessage
     private val _snackbarMessage = MutableLiveData<Event<String>>()
@@ -46,7 +47,7 @@ class StreamViewModel @Inject constructor(
             .doOnSubscribe { _isLoading.postValue(true) }
             .doFinally { _isLoading.postValue(false) }
             .subscribe(
-                { data: ActivityResponse? ->
+                { data: ActivityData? ->
                     _activityData.postValue(Event(data!!))
                 }, { t ->
                     Timber.e(t)
@@ -63,8 +64,8 @@ class StreamViewModel @Inject constructor(
             .doOnSubscribe { _isRefreshing.postValue(true) }
             .doFinally { _isRefreshing.postValue(false) }
             .subscribe(
-                { data: ActivityResponse? ->
-                    if (data == null || data.response?.threads.isNullOrEmpty()){
+                { data: ActivityData? ->
+                    if (data == null || data.threads.isNullOrEmpty()){
                         _isEmpty.postValue(true)
                     }else{
                         _isEmpty.postValue(false)
@@ -84,8 +85,8 @@ class StreamViewModel @Inject constructor(
             .doOnSubscribe { _isLoading.postValue(true) }
             .doFinally { _isLoading.postValue(false) }
             .subscribe(
-                { data: ActivityResponse? ->
-                    if (data == null || data.response?.threads.isNullOrEmpty()){
+                { data: ActivityData? ->
+                    if (data == null || data.threads.isNullOrEmpty()){
                         _isEmpty.postValue(true)
                     }else{
                         _isEmpty.postValue(false)
