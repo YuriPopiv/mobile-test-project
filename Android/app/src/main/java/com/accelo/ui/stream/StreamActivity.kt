@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.accelo.R
 import com.accelo.databinding.ActivityStreamBinding
 import com.accelo.ui.create.CreateActivity
+import com.accelo.ui.view.ViewActivity
 import com.accelo.util.EventObserver
 import com.accelo.util.viewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -41,9 +42,13 @@ class StreamActivity : DaggerAppCompatActivity() {
         binding.viewModel = this@StreamActivity.viewModel
 
         val adapter = StreamAdapter { item ->
-
             Timber.d("Activity Id: ${item.activities?.get(0)}")
 
+            startActivity(item.activities?.first()?.id?.let {
+                ViewActivity.launchActivity(this@StreamActivity,
+                    it
+                )
+            })
         }
 
         binding.searchView.apply {

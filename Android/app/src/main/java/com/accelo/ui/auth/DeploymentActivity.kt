@@ -20,7 +20,7 @@ class DeploymentActivity : AppCompatActivity() {
             R.layout.activity_deployment)
         binding.login.setOnClickListener {
 
-            openAuthPage(binding.editText.text.toString())
+            openAuthPage(binding.deployment.text.toString())
         }
     }
 

@@ -36,6 +36,7 @@
 
         <activity android:name=".ui.stream.StreamActivity"/>
         <activity android:name=".ui.create.CreateActivity"/>
+        <activity android:name=".ui.view.ViewActivity" />
     </application>
 
 </manifest>
