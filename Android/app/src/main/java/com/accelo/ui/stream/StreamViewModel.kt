@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.accelo.data.AcceloRepository
 import com.accelo.data.model.ActivityData
-import com.accelo.data.response.ActivityResponse
 import com.accelo.util.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

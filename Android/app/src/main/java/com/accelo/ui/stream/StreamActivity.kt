@@ -71,7 +71,7 @@ class StreamActivity : DaggerAppCompatActivity() {
         viewModel.getActivities()
 
         viewModel.activityData.observe(this, EventObserver {
-            adapter.submitList(it.response!!.threads)
+            adapter.submitList(it.threads)
         })
 
         viewModel.snackbarMessage.observe(this, EventObserver {
