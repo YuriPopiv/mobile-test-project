@@ -2,4 +2,8 @@
     <string name="app_name">Accelo</string>
     <string name="deployment">Deployment</string>
     <string name="login">Login</string>
+    <string name="send">Send</string>
+    <string name="create_activity">Create Activity</string>
+    <string name="body">Body</string>
+    <string name="subject">Subject</string>
 </resources>

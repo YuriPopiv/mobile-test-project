@@ -1,6 +1,7 @@
 package com.accelo.data.api
 
 import com.accelo.data.response.ActivityResponse
+import com.accelo.data.response.CreateActivityResponse
 import com.accelo.data.response.UserResponse
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -19,6 +20,17 @@ interface AcceloService {
 
     ): Single<UserResponse>
 
+    @POST("api/v0/activities?")
+    fun createActivity(
+        @Query("against_id") againstId: Int,
+        @Query("against_type") againstType: String,
+        @Query("medium") medium: String,
+        @Query("owner_type") ownerType: String,
+        @Query("visibility") visibility: String,
+        @Query("subject") subject: String,
+        @Query("body") body: String
+    ): Single<CreateActivityResponse>
+
     @GET("api/v0/activities/threads")
     fun getListActivity(
         @Query("_fields") fields: String,
@@ -32,5 +44,13 @@ interface AcceloService {
         @Query("q") query: String
     ): Single<ActivityResponse>
 
+    companion object{
+        //Mock data for createActivity()
+        const val AGAINST_ID = 47
+        const val AGAINST_TYPE = "task"
+        const val MEDIUM = "note"
+        const val OWNER_TYPE = "Staff"
+        const val VISIBILITY = "all"
+    }
 
 }
