@@ -8,10 +8,13 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.accelo.R
 import com.accelo.databinding.ActivityCreateBinding
 import com.accelo.util.EventObserver
 import com.accelo.util.viewModelProvider
+import com.accelo.workers.DeliveryWorker
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -78,11 +81,20 @@ class CreateActivity : DaggerAppCompatActivity() {
         //builder.setTitle("Error")
         builder.setMessage("No Internet connection, unable to submit the activity.\nDo you want to retry now?")
         builder.setNegativeButton("Cancel", null)
-        builder.setNeutralButton("Submit Later", null)
+        builder.setNeutralButton("Submit Later") {
+                _, _ ->
+
+            viewModel.saveNotDeliveredActivitiesToDB(binding.subject.text.toString(), binding.body.text.toString())
+        }
         builder.setPositiveButton("Retry Now") { _, _ ->
             createActivityAttempt()
         }
         builder.create().show()
+    }
+
+    fun scheduleDelivery(){
+        val request = OneTimeWorkRequestBuilder<DeliveryWorker>().build()
+        WorkManager.getInstance(this@CreateActivity).enqueue(request)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

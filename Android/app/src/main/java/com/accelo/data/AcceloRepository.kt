@@ -6,11 +6,14 @@ import com.accelo.data.api.AcceloService.Companion.AGAINST_TYPE
 import com.accelo.data.api.AcceloService.Companion.MEDIUM
 import com.accelo.data.api.AcceloService.Companion.OWNER_TYPE
 import com.accelo.data.api.AcceloService.Companion.VISIBILITY
+import com.accelo.data.database.ActivityDao
+import com.accelo.data.database.PendingActivity
 import com.accelo.data.model.ActivityData
 import com.accelo.data.model.CreatePostData
 import com.accelo.data.model.FullActivity
 import com.accelo.data.response.UserResponse
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -19,6 +22,7 @@ import javax.inject.Inject
  */
 class AcceloRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
+    private val dataSource: ActivityDao,
     private val service: AcceloService
 ) {
 
@@ -64,6 +68,25 @@ class AcceloRepository @Inject constructor(
         val fields = "id,html_body,interacts, date_logged"
         return service.getFullActivity(activityId, fields)
             .map { it.response }
+    }
+
+    fun getNotDeviveredActivities(): Flowable<List<PendingActivity>>{
+        return dataSource.getActivities()
+    }
+
+    fun saveActivityForFutureDelivery(subject: String, body: String){
+        val activity = PendingActivity(
+            System.currentTimeMillis() ,AGAINST_ID, AGAINST_TYPE, MEDIUM, OWNER_TYPE, VISIBILITY, subject, body
+        )
+        dataSource.insertActivity(activity)
+
+        localDataSource.hasNotDeliveredActivities = true
+
+    }
+
+    fun deleteActivity(){
+        localDataSource.hasNotDeliveredActivities = false
+        dataSource.deleteActivities()
     }
 
 }

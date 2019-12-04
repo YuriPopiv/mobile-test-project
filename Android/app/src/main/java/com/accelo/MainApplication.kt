@@ -10,13 +10,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.accelo.data.AcceloRepository
 import com.accelo.data.LocalDataSource
 import com.accelo.di.DaggerAppComponent
+import com.accelo.di.DeliveryWorkerFactory
 import com.accelo.util.NetworkUtils
 import com.accelo.workers.DeliveryWorker
 import dagger.android.AndroidInjector
@@ -53,11 +51,16 @@ class MainApplication : DaggerApplication(), LifecycleObserver {
     @Inject
     lateinit var networkUtils: NetworkUtils
 
+    @Inject
+    lateinit var workerFactory: DeliveryWorkerFactory
+
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
         ProcessLifecycleOwner.get().lifecycle
             .addObserver(this)
+
+        WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(workerFactory).build())
 
     }
 
@@ -77,11 +80,6 @@ class MainApplication : DaggerApplication(), LifecycleObserver {
                     OneTimeWorkRequestBuilder<DeliveryWorker>().setConstraints(constraints).build()
                 WorkManager.getInstance(this).enqueue(request)
             }
-
-//        }else{
-//            //in case if any will appear
-//            startMonitoringConnectivity()
-//        }
         }
     }
 }

@@ -1,9 +1,6 @@
 package com.accelo.data.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
@@ -14,13 +11,13 @@ import io.reactivex.Flowable
 interface ActivityDao {
 
     @Query("SELECT * FROM activities")
-    fun getActivities(): Flowable<PendingActivity>
+    fun getActivities(): Flowable<List<PendingActivity>>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertActivity(activity: PendingActivity): Completable
 
-    @Query("DELETE FROM activities")
-    fun deleteAllActivities()
+    @Delete
+    fun deleteActivities()
 
 }

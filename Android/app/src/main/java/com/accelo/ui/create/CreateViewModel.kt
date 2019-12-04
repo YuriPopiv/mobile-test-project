@@ -39,6 +39,7 @@ class CreateViewModel @Inject constructor(
 
 
     fun createActivity(body: String, subject: String) {
+        //TODO replace ! (was added for faster reproducing connectivity issue)
         if (!networkUtils.hasNetworkConnection()) {
 
             subscription.add(repo.createActivity(body, subject)
@@ -64,6 +65,10 @@ class CreateViewModel @Inject constructor(
             _navigateToNetworkErrorDialogAction.value = Event(Unit)
         }
 
+    }
+
+    fun saveNotDeliveredActivitiesToDB(body: String, subject: String){
+        repo.saveActivityForFutureDelivery(body, subject)
     }
 
 

@@ -11,9 +11,9 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "activities")
 data class PendingActivity(
     @PrimaryKey
-    @ColumnInfo(name = "id")
-    @SerializedName("id")
-    val id: Long,
+    @ColumnInfo(name = "date_created")
+    @SerializedName("date_created")
+    val dateCreated: Long,
     @ColumnInfo(name ="against_id")
     val againstId: Int,
     @ColumnInfo(name ="against_type")
