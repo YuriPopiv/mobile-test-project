@@ -17,7 +17,7 @@ interface ActivityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertActivity(activity: PendingActivity): Completable
 
-    @Delete
+    @Query("DELETE FROM activities")
     fun deleteActivities()
 
 }

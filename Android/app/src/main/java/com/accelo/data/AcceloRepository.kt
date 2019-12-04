@@ -14,7 +14,10 @@ import com.accelo.data.model.FullActivity
 import com.accelo.data.response.UserResponse
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -74,13 +77,18 @@ class AcceloRepository @Inject constructor(
         return dataSource.getActivities()
     }
 
-    fun saveActivityForFutureDelivery(subject: String, body: String){
+    fun saveActivityForFutureDelivery(subject: String, body: String): Completable{
         val activity = PendingActivity(
             System.currentTimeMillis() ,AGAINST_ID, AGAINST_TYPE, MEDIUM, OWNER_TYPE, VISIBILITY, subject, body
         )
-        dataSource.insertActivity(activity)
+        return dataSource.insertActivity(activity)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                localDataSource.hasNotDeliveredActivities = true
 
-        localDataSource.hasNotDeliveredActivities = true
+            }
+
 
     }
 

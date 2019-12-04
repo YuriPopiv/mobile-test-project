@@ -70,13 +70,14 @@ class DeliveryWorker(
                 .toFlowable() }
 
             .doOnComplete {
-                repository.deleteActivity()
-
-                Timber.e("ALL SENT")
             }.collect({ mutableListOf<Result>()}, { t1, t2: CreatePostData? ->
                 ids.add(t2?.id)
+                Timber.e("${t2?.id} COMPLETED")
                 t1.add(Result.success())
             }).map {
+                repository.deleteActivity()
+                Timber.e("ALL SENT")
+
                 Result.success()
             }
 
