@@ -36,7 +36,8 @@ interface AcceloService {
     @GET("api/v0/activities/threads")
     fun getListActivity(
         @Query("_fields") fields: String,
-        @Query("_limit") limit: Int
+        @Query("_limit") limit: Int,
+        @Query("_page") page: Int
     ): Single<ResponseModel<ActivityData>>
 
 

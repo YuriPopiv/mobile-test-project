@@ -44,11 +44,10 @@ class AcceloRepository @Inject constructor(
             .map { it.response }
     }
 
-    fun getListActivity(
-        fields: String,
-        limit: Int
-    ): Single<ActivityData> {
-        return service.getListActivity(fields, limit)
+    fun getListActivity(page: Int): Single<ActivityData> {
+        val fields = "interacts,date_logged,preview_body"
+        val pageLimit = 20
+        return service.getListActivity(fields, pageLimit, page)
             .map { it.response }
     }
 
