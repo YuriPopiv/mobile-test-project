@@ -33,10 +33,8 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
     fun removeLoadingFooter() {
         isLoadingAdded = false
 
-        val dropItemsQuantity = 1
-        val items = getItems().dropLast(dropItemsQuantity)
-        if (items.isNotEmpty())
-            replaceAll(items)
+        if(getItems().isNotEmpty())
+        removeAt(getItems().size - 1)
     }
 
     override fun getItemCount(): Int {

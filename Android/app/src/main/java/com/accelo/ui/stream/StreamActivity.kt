@@ -89,7 +89,6 @@ class StreamActivity : DaggerAppCompatActivity() {
                 currentPage++
 
                 viewModel.getActivities(currentPage)
-                isLoading = false
             }
         })
 
@@ -100,10 +99,12 @@ class StreamActivity : DaggerAppCompatActivity() {
                 adapter.removeLoadingFooter()
                 adapter.addAll(it.threads!!)
                 adapter.addLoadingFooter()
+                isLoading = false
             }
             else {
-                adapter.removeLoadingFooter()
                 isLastPage = true
+
+                adapter.removeLoadingFooter()
             }
         })
 
