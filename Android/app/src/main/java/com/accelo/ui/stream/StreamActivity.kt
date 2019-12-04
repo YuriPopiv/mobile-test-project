@@ -100,8 +100,10 @@ class StreamActivity : DaggerAppCompatActivity() {
                 adapter.removeLoadingFooter()
                 adapter.addAll(it.threads!!)
                 adapter.addLoadingFooter()
-            } else {
-                adapter.setLoadingItem(false)
+            }
+            else {
+                adapter.removeLoadingFooter()
+                isLastPage = true
             }
         })
 

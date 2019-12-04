@@ -15,7 +15,8 @@ import kotlinx.android.synthetic.main.stream_list_item.view.*
 /**
  * Created by dmytro on 12/3/19
  */
-class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) : BaseRecyclerAdapter<Thread, RecyclerView.ViewHolder>() {
+class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
+    BaseRecyclerAdapter<Thread, RecyclerView.ViewHolder>() {
 
     private val ITEM = 0
     private val LOADING = 1
@@ -24,22 +25,18 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) : BaseRec
 
     private var isLoadingAdded: Boolean = false
 
-    fun setLoadingItem(isLoading: Boolean){
-        isLoadingAdded = isLoading
-    }
-
-    fun addLoadingFooter(){
+    fun addLoadingFooter() {
         isLoadingAdded = true
         add(Thread())
     }
 
-    fun removeLoadingFooter(){
+    fun removeLoadingFooter() {
         isLoadingAdded = false
 
         val dropItemsQuantity = 1
         val items = getItems().dropLast(dropItemsQuantity)
         if (items.isNotEmpty())
-        replaceAll(items)
+            replaceAll(items)
     }
 
     override fun getItemCount(): Int {
@@ -47,7 +44,7 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) : BaseRec
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if( position == getItems().size - 1 && isLoadingAdded) {
+        return if (position == getItems().size - 1 && isLoadingAdded) {
             LOADING
         } else {
             ITEM
@@ -56,16 +53,28 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) : BaseRec
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context
-        return when(viewType) {
-            ITEM -> StreamAdapteViewHolder(LayoutInflater.from(context).inflate(R.layout.stream_list_item, parent, false))
-             else -> StreamAdapteLoadingViewHolder(LayoutInflater.from(context).inflate(R.layout.stream_item_loading, parent, false))
+        return when (viewType) {
+            ITEM -> StreamAdapteViewHolder(
+                LayoutInflater.from(context).inflate(
+                    R.layout.stream_list_item,
+                    parent,
+                    false
+                )
+            )
+            else -> StreamAdapteLoadingViewHolder(
+                LayoutInflater.from(context).inflate(
+                    R.layout.stream_item_loading,
+                    parent,
+                    false
+                )
+            )
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
 
-        when(getItemViewType(position)){
+        when (getItemViewType(position)) {
             ITEM -> {
                 val viewHolder = holder as StreamAdapteViewHolder
 
@@ -103,7 +112,7 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) : BaseRec
 
     }
 
-    inner class StreamAdapteLoadingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class StreamAdapteLoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     }
 }

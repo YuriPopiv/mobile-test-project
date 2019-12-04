@@ -39,24 +39,36 @@ class StreamViewModel @Inject constructor(
     val isEmpty: LiveData<Boolean> = _isEmpty
 
     fun getActivities(page: Int) {
-
-        subscription.add(repo.getListActivity(page)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { _isLoading.postValue(true) }
-            .doFinally { _isLoading.postValue(false) }
-            .subscribe(
-                { data: ActivityData? ->
-                    _activityData.postValue(Event(data!!))
-                }, { t ->
-                    Timber.e(t)
-                    _snackbarMessage.postValue(Event(t.localizedMessage))
-                })
-        )
-
+        if (page == 0) {
+            subscription.add(repo.getListActivity(page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { _isLoading.postValue(true) }
+                .doFinally { _isLoading.postValue(false) }
+                .subscribe(
+                    { data: ActivityData? ->
+                        _activityData.postValue(Event(data!!))
+                    }, { t ->
+                        Timber.e(t)
+                        _snackbarMessage.postValue(Event(t.localizedMessage))
+                    })
+            )
+        } else {
+            subscription.add(repo.getListActivity(page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { data: ActivityData? ->
+                        _activityData.postValue(Event(data!!))
+                    }, { t ->
+                        Timber.e(t)
+                        _snackbarMessage.postValue(Event(t.localizedMessage))
+                    })
+            )
+        }
     }
 
-    fun onSwipeRefresh(){
+    fun onSwipeRefresh() {
         subscription.add(repo.getListActivity(0)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -64,9 +76,9 @@ class StreamViewModel @Inject constructor(
             .doFinally { _isRefreshing.postValue(false) }
             .subscribe(
                 { data: ActivityData? ->
-                    if (data == null || data.threads.isNullOrEmpty()){
+                    if (data == null || data.threads.isNullOrEmpty()) {
                         _isEmpty.postValue(true)
-                    }else{
+                    } else {
                         _isEmpty.postValue(false)
                         _activityData.postValue(Event(data))
                     }
@@ -77,7 +89,7 @@ class StreamViewModel @Inject constructor(
         )
     }
 
-    fun search(query: String){
+    fun search(query: String) {
         subscription.add(repo.search("interacts,date_logged,preview_body", query)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -85,9 +97,9 @@ class StreamViewModel @Inject constructor(
             .doFinally { _isLoading.postValue(false) }
             .subscribe(
                 { data: ActivityData? ->
-                    if (data == null || data.threads.isNullOrEmpty()){
+                    if (data == null || data.threads.isNullOrEmpty()) {
                         _isEmpty.postValue(true)
-                    }else{
+                    } else {
                         _isEmpty.postValue(false)
                         _activityData.postValue(Event(data))
                     }
