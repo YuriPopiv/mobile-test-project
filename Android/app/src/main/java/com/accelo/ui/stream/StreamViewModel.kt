@@ -38,9 +38,9 @@ class StreamViewModel @Inject constructor(
     private val _isEmpty = MediatorLiveData<Boolean>()
     val isEmpty: LiveData<Boolean> = _isEmpty
 
-    fun getActivities() {
+    fun getActivities(page: Int) {
 
-        subscription.add(repo.getListActivity("interacts,date_logged,preview_body", 20)
+        subscription.add(repo.getListActivity(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { _isLoading.postValue(true) }
@@ -57,7 +57,7 @@ class StreamViewModel @Inject constructor(
     }
 
     fun onSwipeRefresh(){
-        subscription.add(repo.getListActivity("interacts,date_logged,preview_body", 20)
+        subscription.add(repo.getListActivity(0)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { _isRefreshing.postValue(true) }
