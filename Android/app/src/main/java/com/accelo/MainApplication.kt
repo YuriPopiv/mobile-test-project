@@ -71,8 +71,6 @@ class MainApplication : DaggerApplication(), LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun checkForNotDeliveredActivities() {
-
-//        if (localDataSource.hasNotDeliveredActivities) {
         if (localDataSource.hasNotDeliveredActivities()) {
             if (networkUtils.hasNetworkConnection()) {
                 val request = OneTimeWorkRequestBuilder<DeliveryWorker>().build()

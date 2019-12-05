@@ -90,9 +90,7 @@ class AcceloRepository @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
-//                localDataSource.hasNotDeliveredActivities = true
                 localDataSource.saveNotDeliveredActivitiesState(true)
-
             }
 
 
