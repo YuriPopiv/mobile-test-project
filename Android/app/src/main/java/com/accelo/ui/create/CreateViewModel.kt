@@ -65,11 +65,11 @@ class CreateViewModel @Inject constructor(
 
     }
 
-    fun saveNotDeliveredActivitiesToDB(body: String, subject: String) {
+    fun saveNotDeliveredActivitiesToDB(body: String, subject: String){
         repo.saveActivityForFutureDelivery(body, subject)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { }
+            .subscribe {  }
     }
 
 
