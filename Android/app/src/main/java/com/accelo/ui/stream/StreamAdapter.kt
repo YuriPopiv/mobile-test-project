@@ -18,11 +18,7 @@ import kotlinx.android.synthetic.main.stream_list_item.view.*
 class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
     BaseRecyclerAdapter<Thread, RecyclerView.ViewHolder>() {
 
-    private val ITEM = 0
-    private val LOADING = 1
-
     private lateinit var context: Context
-
     private var isLoadingAdded: Boolean = false
 
     fun addLoadingFooter() {
@@ -33,8 +29,8 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
     fun removeLoadingFooter() {
         isLoadingAdded = false
 
-        if(getItems().isNotEmpty())
-        removeAt(getItems().size - 1)
+        if (getItems().isNotEmpty())
+            removeAt(getItems().size - 1)
     }
 
     override fun getItemCount(): Int {
@@ -52,14 +48,14 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context
         return when (viewType) {
-            ITEM -> StreamAdapteViewHolder(
+            ITEM -> StreamAdapterViewHolder(
                 LayoutInflater.from(context).inflate(
                     R.layout.stream_list_item,
                     parent,
                     false
                 )
             )
-            else -> StreamAdapteLoadingViewHolder(
+            else -> StreamAdapterLoadingViewHolder(
                 LayoutInflater.from(context).inflate(
                     R.layout.stream_item_loading,
                     parent,
@@ -74,9 +70,9 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
 
         when (getItemViewType(position)) {
             ITEM -> {
-                val viewHolder = holder as StreamAdapteViewHolder
+                val viewHolder = holder as StreamAdapterViewHolder
 
-                val activity = item.activities?.get(0)
+                val activity = item.activities?.first()
                 val from = activity?.interacts?.firstOrNull { owner -> owner.type == "from" }
 
                 activity?.apply {
@@ -99,7 +95,7 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
         }
     }
 
-    inner class StreamAdapteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class StreamAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val userImage = itemView.user_image
         val userName = itemView.user_name
         val date = itemView.date
@@ -110,7 +106,12 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
 
     }
 
-    inner class StreamAdapteLoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class StreamAdapterLoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    }
+
+    companion object {
+        private const val ITEM = 0
+        private const val LOADING = 1
     }
 }
