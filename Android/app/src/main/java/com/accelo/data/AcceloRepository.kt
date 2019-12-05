@@ -11,7 +11,9 @@ import com.accelo.data.model.CreatePostData
 import com.accelo.data.model.FullActivity
 import com.accelo.data.response.UserResponse
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -51,10 +53,8 @@ class AcceloRepository @Inject constructor(
             .map { it.response }
     }
 
-    fun search(
-        fields: String,
-        query: String
-    ): Single<ActivityData> {
+    fun search(query: String): Single<ActivityData> {
+        val fields = "interacts,date_logged,preview_body"
         return service.search(fields, query)
             .map { it.response }
     }

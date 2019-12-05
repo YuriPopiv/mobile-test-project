@@ -5,6 +5,7 @@ import com.accelo.data.model.ActivityData
 import com.accelo.data.model.CreatePostData
 import com.accelo.data.model.FullActivity
 import com.accelo.data.response.UserResponse
+import io.reactivex.Flowable
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.POST

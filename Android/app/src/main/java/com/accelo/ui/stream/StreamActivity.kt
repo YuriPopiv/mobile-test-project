@@ -63,7 +63,9 @@ class StreamActivity : DaggerAppCompatActivity() {
                 }
 
                 override fun onQueryTextChange(query: String): Boolean {
-                    viewModel.search(query)
+                    if(query.isNotEmpty()) {
+                        viewModel.search(query)
+                    }
                     return true
                 }
             })
@@ -108,6 +110,25 @@ class StreamActivity : DaggerAppCompatActivity() {
             }
         })
 
+        viewModel.refreshData.observe(this, EventObserver{
+            if (!it.threads.isNullOrEmpty()) {
+                adapter.replaceAll(it.threads!!)
+                adapter.addLoadingFooter()
+                isLoading = false
+                isLastPage = false
+                currentPage = PAGE_START
+            }
+        })
+
+        viewModel.searchData.observe(this, EventObserver{
+            if (!it.threads.isNullOrEmpty()) {
+                adapter.replaceAll(it.threads!!)
+                isLoading = false
+                isLastPage = false
+                currentPage = PAGE_START
+            }
+        })
+
         viewModel.snackbarMessage.observe(this, EventObserver {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
         })
@@ -124,8 +145,6 @@ class StreamActivity : DaggerAppCompatActivity() {
 
         alertDialog.show()
     }
-
-    companion object{
-        const val PAGE_START = 0
-    }
 }
+
+const val PAGE_START = 0
