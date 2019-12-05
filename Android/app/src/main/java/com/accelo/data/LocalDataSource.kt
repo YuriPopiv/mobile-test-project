@@ -36,6 +36,7 @@ class LocalDataSource @Inject constructor(private val prefs: SharedPreferences) 
     fun clearData() {
         prefs.edit { KEY_USER_TOKEN to null }
         prefs.edit { KEY_DEPLOYMENT to null }
+        prefs.edit { KEY_ACTIVITIES to null }
         accessToken = null
     }
 

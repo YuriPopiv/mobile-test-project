@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.accelo.data.AcceloAuthInterceptor
 import com.accelo.data.LocalDataSource
+import com.accelo.data.UnauthorizedInterceptor
 import com.accelo.data.api.AcceloService
 import com.accelo.data.database.ActivityDatabase
 import com.accelo.data.database.ActivityDao
@@ -25,13 +26,15 @@ class AppModule {
     @Singleton
     @Provides
     fun provideService(
-        localDataSource: LocalDataSource
+        unauthorizedInterceptor: UnauthorizedInterceptor,
+        authInterceptor: AcceloAuthInterceptor
     ): AcceloService {
         val client = OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             )
-            .addInterceptor(AcceloAuthInterceptor(localDataSource))
+            .addInterceptor(unauthorizedInterceptor)
+            .addInterceptor(authInterceptor)
             .build()
         return Retrofit.Builder()
             //TODO should be dynamic
