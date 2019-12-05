@@ -5,6 +5,7 @@ import com.accelo.data.model.ActivityData
 import com.accelo.data.model.CreatePostData
 import com.accelo.data.model.FullActivity
 import com.accelo.data.response.UserResponse
+import io.reactivex.Flowable
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -37,7 +38,8 @@ interface AcceloService {
     @GET("api/v0/activities/threads")
     fun getListActivity(
         @Query("_fields") fields: String,
-        @Query("_limit") limit: Int
+        @Query("_limit") limit: Int,
+        @Query("_page") page: Int
     ): Single<ResponseModel<ActivityData>>
 
 

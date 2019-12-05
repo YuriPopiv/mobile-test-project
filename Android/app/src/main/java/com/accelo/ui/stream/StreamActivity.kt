@@ -6,6 +6,7 @@ import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.accelo.R
 import com.accelo.databinding.ActivityStreamBinding
@@ -28,6 +29,10 @@ class StreamActivity : DaggerAppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: StreamViewModel
 
+    private var isLoading = false
+    private var isLastPage = false
+    private var currentPage = PAGE_START
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +45,6 @@ class StreamActivity : DaggerAppCompatActivity() {
         binding.viewModel = this@StreamActivity.viewModel
 
         val adapter = StreamAdapter { item ->
-            Timber.d("Activity Id: ${item.activities?.get(0)}")
-
             val activity = item.activities?.first()
 
             activity?.let {
@@ -61,7 +64,9 @@ class StreamActivity : DaggerAppCompatActivity() {
                 }
 
                 override fun onQueryTextChange(query: String): Boolean {
-                    viewModel.search(query)
+                    if(query.isNotEmpty()) {
+                        viewModel.search(query)
+                    }
                     return true
                 }
 
@@ -73,12 +78,27 @@ class StreamActivity : DaggerAppCompatActivity() {
         }
 
         val recyclerView = binding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
+        val layoutManager = LinearLayoutManager(recyclerView.context)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = adapter
-        viewModel.getActivities()
+
+        recyclerView.addOnScrollListener(object : PaginationScrollListener(layoutManager) {
+            override fun isLastPage(): Boolean = isLastPage
+
+            override fun isLoading(): Boolean = isLoading
+
+            override fun loadMoreItems() {
+                isLoading = true
+                currentPage++
+
+                viewModel.getActivities(currentPage)
+            }
+        })
+
+        viewModel.getActivities(currentPage)
 
         viewModel.activityData.observe(this, EventObserver {
-            adapter.submitList(it.threads)
             //Deletion trick
 //            val list = it.threads?.filter {
 //                it.interacts?.find { owner -> owner.ownerName.equals("Yuri Popiv") } != null
@@ -87,6 +107,36 @@ class StreamActivity : DaggerAppCompatActivity() {
 //
 //                viewModel.delete(it.id!!)
 //            }
+            if (!it.threads.isNullOrEmpty()) {
+                adapter.removeLoadingFooter()
+                adapter.addAll(it.threads!!)
+                adapter.addLoadingFooter()
+                isLoading = false
+            }
+            else {
+                isLastPage = true
+
+                adapter.removeLoadingFooter()
+            }
+        })
+
+        viewModel.refreshData.observe(this, EventObserver{
+            if (!it.threads.isNullOrEmpty()) {
+                adapter.replaceAll(it.threads!!)
+                adapter.addLoadingFooter()
+                isLoading = false
+                isLastPage = false
+                currentPage = PAGE_START
+            }
+        })
+
+        viewModel.searchData.observe(this, EventObserver{
+            if (!it.threads.isNullOrEmpty()) {
+                adapter.replaceAll(it.threads!!)
+                isLoading = false
+                isLastPage = false
+                currentPage = PAGE_START
+            }
         })
 
         viewModel.snackbarMessage.observe(this, EventObserver {
@@ -109,3 +159,5 @@ class StreamActivity : DaggerAppCompatActivity() {
         alertDialog.show()
     }
 }
+
+const val PAGE_START = 0

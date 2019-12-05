@@ -15,6 +15,7 @@ import com.accelo.data.response.UserResponse
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import java.util.concurrent.TimeUnit
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
@@ -51,18 +52,15 @@ class AcceloRepository @Inject constructor(
             .map { it.response }
     }
 
-    fun getListActivity(
-        fields: String,
-        limit: Int
-    ): Single<ActivityData> {
-        return service.getListActivity(fields, limit)
+    fun getListActivity(page: Int): Single<ActivityData> {
+        val fields = "interacts,date_logged,preview_body"
+        val pageLimit = 20
+        return service.getListActivity(fields, pageLimit, page)
             .map { it.response }
     }
 
-    fun search(
-        fields: String,
-        query: String
-    ): Single<ActivityData> {
+    fun search(query: String): Single<ActivityData> {
+        val fields = "interacts,date_logged,preview_body"
         return service.search(fields, query)
             .map { it.response }
     }
@@ -74,7 +72,6 @@ class AcceloRepository @Inject constructor(
     }
 
     fun delete(activityId: String): Single<ResponseBody> {
-        val fields = "id,html_body,interacts, date_logged"
         return service.deleteActivity(activityId)
     }
 
