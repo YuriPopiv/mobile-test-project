@@ -63,6 +63,12 @@ class AppModule {
     fun provideActivityDao(context: Context): ActivityDao {
         return ActivityDatabase.getInstance(context).activityDao()
     }
+
+    @Singleton
+    @Provides
+    fun provideLocalDataSource(sharedPreferences: SharedPreferences): LocalDataSource {
+        return LocalDataSource(sharedPreferences)
+    }
 }
 
 const val PREFS = "ACCELO_PREFS"
