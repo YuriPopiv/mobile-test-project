@@ -6,6 +6,8 @@ import com.accelo.data.api.AcceloService.Companion.AGAINST_TYPE
 import com.accelo.data.api.AcceloService.Companion.MEDIUM
 import com.accelo.data.api.AcceloService.Companion.OWNER_TYPE
 import com.accelo.data.api.AcceloService.Companion.VISIBILITY
+import com.accelo.data.database.ActivityDao
+import com.accelo.data.database.PendingActivity
 import com.accelo.data.model.ActivityData
 import com.accelo.data.model.CreatePostData
 import com.accelo.data.model.FullActivity
@@ -14,6 +16,9 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import java.util.concurrent.TimeUnit
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 /**
@@ -21,6 +26,7 @@ import javax.inject.Inject
  */
 class AcceloRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
+    private val dataSource: ActivityDao,
     private val service: AcceloService
 ) {
 
@@ -63,6 +69,41 @@ class AcceloRepository @Inject constructor(
         val fields = "id,html_body,interacts, date_logged"
         return service.getFullActivity(activityId, fields)
             .map { it.response }
+    }
+
+    fun delete(activityId: String): Single<ResponseBody> {
+        return service.deleteActivity(activityId)
+    }
+
+    fun getNotDeliveredActivities(): Flowable<List<PendingActivity>>{
+
+        return Flowable.fromCallable { dataSource.getActivities() }
+
+
+    }
+
+    fun saveActivityForFutureDelivery(subject: String, body: String): Completable{
+        val activity = PendingActivity(
+            System.currentTimeMillis() ,AGAINST_ID, AGAINST_TYPE, MEDIUM, OWNER_TYPE, VISIBILITY, subject, body
+        )
+        return dataSource.insertActivity(activity)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                localDataSource.hasNotDeliveredActivities = true
+
+            }
+
+
+    }
+
+    fun deleteActivity(activity: PendingActivity){
+        dataSource.deleteActivity(activity)
+    }
+
+    fun deleteActivities(){
+        localDataSource.hasNotDeliveredActivities = false
+        dataSource.deleteAllActivities()
     }
 
 }

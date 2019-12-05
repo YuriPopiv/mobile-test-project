@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import com.accelo.data.AcceloAuthInterceptor
 import com.accelo.data.LocalDataSource
 import com.accelo.data.api.AcceloService
+import com.accelo.data.database.ActivityDatabase
+import com.accelo.data.database.ActivityDao
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -13,7 +15,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Url
 import javax.inject.Singleton
 
 /**
@@ -52,6 +53,12 @@ class AppModule {
     @Provides
     fun provideSharedPreferences(context: Context): SharedPreferences {
         return context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+    }
+
+    @Singleton
+    @Provides
+    fun provideActivityDao(context: Context): ActivityDao {
+        return ActivityDatabase.getInstance(context).activityDao()
     }
 }
 

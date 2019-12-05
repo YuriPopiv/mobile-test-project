@@ -17,6 +17,7 @@ import com.accelo.util.KeyboardUtil.dismissKeyboard
 import com.accelo.util.viewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -68,6 +69,7 @@ class StreamActivity : DaggerAppCompatActivity() {
                     }
                     return true
                 }
+
             })
         }
 
@@ -97,6 +99,14 @@ class StreamActivity : DaggerAppCompatActivity() {
         viewModel.getActivities(currentPage)
 
         viewModel.activityData.observe(this, EventObserver {
+            //Deletion trick
+//            val list = it.threads?.filter {
+//                it.interacts?.find { owner -> owner.ownerName.equals("Yuri Popiv") } != null
+//            }
+//            list?.forEach {
+//
+//                viewModel.delete(it.id!!)
+//            }
             if (!it.threads.isNullOrEmpty()) {
                 adapter.removeLoadingFooter()
                 adapter.addAll(it.threads!!)
@@ -139,7 +149,10 @@ class StreamActivity : DaggerAppCompatActivity() {
         alertDialog.setTitle(getString(R.string.confidential_activity))
         alertDialog.setMessage(getString(R.string.confidential_message))
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok)) { dialogInterface, i ->
+        alertDialog.setButton(
+            AlertDialog.BUTTON_POSITIVE,
+            getString(R.string.ok)
+        ) { dialogInterface, i ->
             alertDialog.dismiss()
         }
 

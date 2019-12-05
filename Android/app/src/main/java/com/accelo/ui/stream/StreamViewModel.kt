@@ -77,6 +77,22 @@ class StreamViewModel @Inject constructor(
         _snackbarMessage.postValue(Event(throwable.localizedMessage))
     }
 
+    fun delete(id: String) {
+
+        addSubscription(repository.delete(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { _isLoading.postValue(true) }
+            .doFinally { _isLoading.postValue(false) }
+            .subscribe(
+                {
+                    Timber.e(it.toString())
+                }, { t ->
+                })
+        )
+
+    }
+
     fun onSwipeRefresh() {
         addSubscription(repository.getListActivity(PAGE_START)
             .subscribeOn(Schedulers.io())

@@ -7,10 +7,8 @@ import com.accelo.data.model.FullActivity
 import com.accelo.data.response.UserResponse
 import io.reactivex.Flowable
 import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import okhttp3.ResponseBody
+import retrofit2.http.*
 
 /**
  * Created by Yuri Popiv on 11/26/2019.
@@ -33,6 +31,9 @@ interface AcceloService {
         @Query("subject") subject: String,
         @Query("body") body: String
     ): Single<ResponseModel<CreatePostData>>
+
+    @DELETE("api/v0/activities/{activity_id}")
+    fun deleteActivity(@Path("activity_id") activityId: String): Single<ResponseBody>
 
     @GET("api/v0/activities/threads")
     fun getListActivity(
