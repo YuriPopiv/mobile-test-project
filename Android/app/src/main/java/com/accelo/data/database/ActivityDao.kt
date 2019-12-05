@@ -11,13 +11,16 @@ import io.reactivex.Flowable
 interface ActivityDao {
 
     @Query("SELECT * FROM activities")
-    fun getActivities(): Flowable<List<PendingActivity>>
+    fun getActivities(): List<PendingActivity>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertActivity(activity: PendingActivity): Completable
 
     @Query("DELETE FROM activities")
-    fun deleteActivities()
+    fun deleteAllActivities()
+
+    @Delete
+    fun deleteActivity(activity: PendingActivity)
 
 }

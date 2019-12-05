@@ -8,6 +8,7 @@ import android.net.NetworkRequest
 import androidx.core.content.getSystemService
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.Observer
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.*
@@ -20,6 +21,7 @@ import com.accelo.workers.DeliveryWorker
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import timber.log.Timber
+import java.util.concurrent.Executor
 import javax.inject.Inject
 
 /**
@@ -60,7 +62,10 @@ class MainApplication : DaggerApplication(), LifecycleObserver {
         ProcessLifecycleOwner.get().lifecycle
             .addObserver(this)
 
-        WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(workerFactory).build())
+        WorkManager.initialize(
+            this,
+            Configuration.Builder().setWorkerFactory(workerFactory).build()
+        )
 
     }
 
@@ -71,6 +76,10 @@ class MainApplication : DaggerApplication(), LifecycleObserver {
             if (networkUtils.hasNetworkConnection()) {
                 val request = OneTimeWorkRequestBuilder<DeliveryWorker>().build()
                 WorkManager.getInstance(this).enqueue(request)
+                WorkManager.getInstance(this).getWorkInfoByIdLiveData(request.id)
+                    .observe(ProcessLifecycleOwner.get(), Observer {
+                        Timber.e("Worker status $it")
+                    })
             } else {
 
                 //shedule re-attemt when network will be available
@@ -79,10 +88,16 @@ class MainApplication : DaggerApplication(), LifecycleObserver {
                 val request =
                     OneTimeWorkRequestBuilder<DeliveryWorker>().setConstraints(constraints).build()
                 WorkManager.getInstance(this).enqueue(request)
+                WorkManager.getInstance(this).getWorkInfoByIdLiveData(request.id)
+                    .observe(ProcessLifecycleOwner.get(), Observer {
+                        Timber.e("Worker status $it")
+                    })
             }
         }
     }
 }
+
+
 
 //    fun startMonitoringConnectivity(){
 //        connectivityMonitor = getSystemService<ConnectivityManager>()
