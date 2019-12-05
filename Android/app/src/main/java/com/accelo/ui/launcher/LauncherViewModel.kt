@@ -21,7 +21,7 @@ class LauncherViewModel @Inject constructor(
     val launchDestination: LiveData<Event<Destination>>
 
     init {
-        sessinActive.postValue(Result.Success(localDataSource.accessToken != null))
+        sessinActive.postValue(Result.Success(localDataSource.getToken().isNotEmpty()))
 
         launchDestination = Transformations.map(sessinActive) {
             if ((it as? Result.Success)?.data == false) {

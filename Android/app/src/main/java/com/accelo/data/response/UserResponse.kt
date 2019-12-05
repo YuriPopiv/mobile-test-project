@@ -17,7 +17,7 @@ data class UserResponse(
     var accountDetails: AccountDetails? = null,
     @SerializedName("access_token")
     @Expose
-    var accessToken: String? = null,
+    var accessToken: String,
     @SerializedName("deployment")
     @Expose
     var deployment: String? = null,
