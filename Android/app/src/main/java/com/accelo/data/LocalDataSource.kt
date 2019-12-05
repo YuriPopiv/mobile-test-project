@@ -17,7 +17,7 @@ class LocalDataSource @Inject constructor(private val prefs: SharedPreferences) 
 
     fun getDeploymentName(): String = prefs.getString(KEY_DEPLOYMENT, "") ?: ""
 
-    fun saveNotDeliveredActivitiesState(state: Boolean) = prefs.edit { putBoolean(KEY_ACTIVITIES, false) }
+    fun saveNotDeliveredActivitiesState(state: Boolean) = prefs.edit { putBoolean(KEY_ACTIVITIES, state) }
 
     fun hasNotDeliveredActivities(): Boolean = prefs.getBoolean(KEY_ACTIVITIES, false)
 
