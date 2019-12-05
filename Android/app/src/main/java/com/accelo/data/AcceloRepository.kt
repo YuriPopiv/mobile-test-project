@@ -14,10 +14,10 @@ import com.accelo.data.model.FullActivity
 import com.accelo.data.response.UserResponse
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 /**
@@ -73,8 +73,16 @@ class AcceloRepository @Inject constructor(
             .map { it.response }
     }
 
-    fun getNotDeviveredActivities(): Flowable<List<PendingActivity>>{
-        return dataSource.getActivities()
+    fun delete(activityId: String): Single<ResponseBody> {
+        val fields = "id,html_body,interacts, date_logged"
+        return service.deleteActivity(activityId)
+    }
+
+    fun getNotDeliveredActivities(): Flowable<List<PendingActivity>>{
+
+        return Flowable.fromCallable { dataSource.getActivities() }
+
+
     }
 
     fun saveActivityForFutureDelivery(subject: String, body: String): Completable{
@@ -92,9 +100,13 @@ class AcceloRepository @Inject constructor(
 
     }
 
-    fun deleteActivity(){
+    fun deleteActivity(activity: PendingActivity){
+        dataSource.deleteActivity(activity)
+    }
+
+    fun deleteActivities(){
         localDataSource.hasNotDeliveredActivities = false
-        dataSource.deleteActivities()
+        dataSource.deleteAllActivities()
     }
 
 }
