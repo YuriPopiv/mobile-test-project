@@ -25,10 +25,9 @@ class AcceloAuthInterceptor @Inject constructor(
 
             request.addHeader("Authorization", "Basic $base64")
         }else{
-            request.addHeader("Authorization", "Bearer ${localData.accessToken}")
+            request.addHeader("Authorization", "Bearer ${localData.getToken()}")
 
         }
-
 
         return chain.proceed(request.build())
     }
