@@ -79,6 +79,14 @@ class StreamActivity : DaggerAppCompatActivity() {
 
         viewModel.activityData.observe(this, EventObserver {
             adapter.submitList(it.threads)
+            //Deletion trick
+//            val list = it.threads?.filter {
+//                it.interacts?.find { owner -> owner.ownerName.equals("Yuri Popiv") } != null
+//            }
+//            list?.forEach {
+//
+//                viewModel.delete(it.id!!)
+//            }
         })
 
         viewModel.snackbarMessage.observe(this, EventObserver {
@@ -91,7 +99,10 @@ class StreamActivity : DaggerAppCompatActivity() {
         alertDialog.setTitle(getString(R.string.confidential_activity))
         alertDialog.setMessage(getString(R.string.confidential_message))
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok)) { dialogInterface, i ->
+        alertDialog.setButton(
+            AlertDialog.BUTTON_POSITIVE,
+            getString(R.string.ok)
+        ) { dialogInterface, i ->
             alertDialog.dismiss()
         }
 

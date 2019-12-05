@@ -56,6 +56,22 @@ class StreamViewModel @Inject constructor(
 
     }
 
+    fun delete(id: String) {
+
+        subscription.add(repo.delete(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { _isLoading.postValue(true) }
+            .doFinally { _isLoading.postValue(false) }
+            .subscribe(
+                {
+                    Timber.e(it.toString())
+                }, { t ->
+                })
+        )
+
+    }
+
     fun onSwipeRefresh(){
         subscription.add(repo.getListActivity("interacts,date_logged,preview_body", 20)
             .subscribeOn(Schedulers.io())
