@@ -37,19 +37,19 @@ class AppModule {
             .addInterceptor(authInterceptor)
             .build()
         return Retrofit.Builder()
-            //TODO should be dynamic
-            .baseUrl("https://nk-company-2019.api.accelo.com/")
-            .client(client)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(
-                GsonConverterFactory.create(
-                    GsonBuilder()
-                        .setLenient()
-                        .create()
+                //TODO should be dynamic
+                .baseUrl("https://nk-company-2019.api.accelo.com/")
+                .client(client)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(
+                        GsonConverterFactory.create(
+                                GsonBuilder()
+                                        .setLenient()
+                                        .create()
+                        )
                 )
-            )
-            .build()
-            .create(AcceloService::class.java)
+                .build()
+                .create(AcceloService::class.java)
     }
 
     @Singleton

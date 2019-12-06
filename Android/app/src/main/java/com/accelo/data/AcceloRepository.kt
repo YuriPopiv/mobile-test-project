@@ -101,7 +101,6 @@ class AcceloRepository @Inject constructor(
     }
 
     fun deleteActivities(){
-//        localDataSource.hasNotDeliveredActivities = false
         localDataSource.saveNotDeliveredActivitiesState(false)
         dataSource.deleteAllActivities()
     }

@@ -1,6 +1,5 @@
 package com.accelo.data
 
-import android.content.SharedPreferences
 import android.util.Base64
 import com.accelo.BuildConfig
 import okhttp3.Interceptor
@@ -17,14 +16,14 @@ class AcceloAuthInterceptor @Inject constructor(
         val request = chain.request().newBuilder()
         val endpoint = chain.request().url().encodedPath()
 
-        if (endpoint.contains("oauth2")){
+        if (endpoint.contains("oauth2")) {
             val credentials = "${BuildConfig.CLIENT_ID}:${BuildConfig.CLIENT_SECRET}"
 
 
             val base64 = Base64.encodeToString(credentials.toByteArray(), Base64.NO_WRAP)
 
             request.addHeader("Authorization", "Basic $base64")
-        }else{
+        } else {
             request.addHeader("Authorization", "Bearer ${localData.getToken()}")
 
         }
