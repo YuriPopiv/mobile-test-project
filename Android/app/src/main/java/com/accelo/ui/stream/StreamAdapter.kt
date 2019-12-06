@@ -81,7 +81,15 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
                     viewHolder.title.text = subject
                     viewHolder.content.text = previewBody
                     var interacters = ""
-                    interacts?.forEach { owner: Owner -> interacters += "${owner.ownerName}," }
+                    interacts
+                        ?.filter { owner -> owner.type == "to" || owner.type == "cc"}
+                        ?.forEach{ owner ->
+                            interacters +=
+                                if (interacters.isBlank())
+                                    "${owner.ownerName}"
+                                else
+                                    ",${owner.ownerName}"
+                    }
                     viewHolder.interact.text = interacters
 
                     viewHolder.streamItemLayout.setOnClickListener {
