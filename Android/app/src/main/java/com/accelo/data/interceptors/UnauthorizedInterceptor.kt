@@ -1,10 +1,8 @@
-package com.accelo.data
+package com.accelo.data.interceptors
 
 import android.content.Context
 import android.content.Intent
-import android.util.Base64
-import com.accelo.BuildConfig
-import com.accelo.MainApplication
+import com.accelo.data.LocalDataSource
 import com.accelo.data.database.ActivityDao
 import com.accelo.ui.launcher.LauncherActivity
 import okhttp3.Interceptor

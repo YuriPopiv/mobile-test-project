@@ -2,12 +2,13 @@ package com.accelo.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.accelo.data.AcceloAuthInterceptor
+import com.accelo.data.interceptors.AcceloAuthInterceptor
 import com.accelo.data.LocalDataSource
-import com.accelo.data.UnauthorizedInterceptor
+import com.accelo.data.interceptors.UnauthorizedInterceptor
 import com.accelo.data.api.AcceloService
 import com.accelo.data.database.ActivityDatabase
 import com.accelo.data.database.ActivityDao
+import com.accelo.data.interceptors.DynamicUrlInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -27,7 +28,8 @@ class AppModule {
     @Provides
     fun provideService(
         unauthorizedInterceptor: UnauthorizedInterceptor,
-        authInterceptor: AcceloAuthInterceptor
+        authInterceptor: AcceloAuthInterceptor,
+        dynamicUrlInterceptor: DynamicUrlInterceptor
     ): AcceloService {
         val client = OkHttpClient.Builder()
             .addInterceptor(
@@ -35,21 +37,21 @@ class AppModule {
             )
             .addInterceptor(unauthorizedInterceptor)
             .addInterceptor(authInterceptor)
+            .addInterceptor(dynamicUrlInterceptor)
             .build()
         return Retrofit.Builder()
-                //TODO should be dynamic
-                .baseUrl("https://nk-company-2019.api.accelo.com/")
-                .client(client)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(
-                        GsonConverterFactory.create(
-                                GsonBuilder()
-                                        .setLenient()
-                                        .create()
-                        )
+            .baseUrl("https://api.accelo.com/")
+            .client(client)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(
+                GsonConverterFactory.create(
+                    GsonBuilder()
+                        .setLenient()
+                        .create()
                 )
-                .build()
-                .create(AcceloService::class.java)
+            )
+            .build()
+            .create(AcceloService::class.java)
     }
 
     @Singleton
@@ -68,6 +70,12 @@ class AppModule {
     @Provides
     fun provideLocalDataSource(sharedPreferences: SharedPreferences): LocalDataSource {
         return LocalDataSource(sharedPreferences)
+    }
+
+    @Singleton
+    @Provides
+    fun provideDynamicUrlInterceptor(localDataSource: LocalDataSource): DynamicUrlInterceptor {
+        return DynamicUrlInterceptor(localDataSource)
     }
 }
 

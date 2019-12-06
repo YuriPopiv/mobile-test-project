@@ -1,7 +1,8 @@
-package com.accelo.data
+package com.accelo.data.interceptors
 
 import android.util.Base64
 import com.accelo.BuildConfig
+import com.accelo.data.LocalDataSource
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
