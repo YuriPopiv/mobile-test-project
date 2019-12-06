@@ -1,6 +1,5 @@
 package com.accelo.data
 
-import android.content.SharedPreferences
 import android.util.Base64
 import com.accelo.BuildConfig
 import okhttp3.Interceptor
@@ -28,7 +27,6 @@ class AcceloAuthInterceptor @Inject constructor(
             request.addHeader("Authorization", "Bearer ${localData.getToken()}")
 
         }
-
 
         return chain.proceed(request.build())
     }

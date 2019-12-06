@@ -39,9 +39,7 @@ class CreateViewModel @Inject constructor(
 
 
     fun createActivity(body: String, subject: String) {
-        //TODO replace ! (was added for faster reproducing connectivity issue)
-        if (!networkUtils.hasNetworkConnection()) {
-
+        if (networkUtils.hasNetworkConnection()) {
             subscription.add(repo.createActivity(body, subject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -60,7 +58,7 @@ class CreateViewModel @Inject constructor(
 
                     })
             )
-        }else{
+        } else {
             Timber.e("No network connection")
             _navigateToNetworkErrorDialogAction.value = Event(Unit)
         }
