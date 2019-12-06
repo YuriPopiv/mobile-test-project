@@ -81,6 +81,7 @@ class StreamActivity : DaggerAppCompatActivity() {
         val layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.layoutManager = layoutManager
         recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.addItemDecoration(StreamItemDecoration(resources.getDimension(R.dimen.item_decoration_padding).toInt()))
         recyclerView.adapter = adapter
 
         recyclerView.addOnScrollListener(object : PaginationScrollListener(layoutManager) {
