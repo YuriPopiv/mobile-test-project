@@ -17,15 +17,15 @@ class AcceloAuthInterceptor @Inject constructor(
         val request = chain.request().newBuilder()
         val endpoint = chain.request().url().encodedPath()
 
-        if (endpoint.contains("oauth2")){
+        if (endpoint.contains("oauth2")) {
             val credentials = "${BuildConfig.CLIENT_ID}:${BuildConfig.CLIENT_SECRET}"
 
 
             val base64 = Base64.encodeToString(credentials.toByteArray(), Base64.NO_WRAP)
 
             request.addHeader("Authorization", "Basic $base64")
-        }else{
-            request.addHeader("Authorization", "Bearer ${localData.accessToken}")
+        } else {
+            request.addHeader("Authorization", "Bearer ${localData.getToken()}")
 
         }
 

@@ -25,28 +25,28 @@ class AppModule {
     @Singleton
     @Provides
     fun provideService(
-        localDataSource: LocalDataSource
+            localDataSource: LocalDataSource
     ): AcceloService {
         val client = OkHttpClient.Builder()
-            .addInterceptor(
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            )
-            .addInterceptor(AcceloAuthInterceptor(localDataSource))
-            .build()
-        return Retrofit.Builder()
-            //TODO should be dynamic
-            .baseUrl("https://nk-company-2019.api.accelo.com/")
-            .client(client)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(
-                GsonConverterFactory.create(
-                    GsonBuilder()
-                        .setLenient()
-                        .create()
+                .addInterceptor(
+                        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
                 )
-            )
-            .build()
-            .create(AcceloService::class.java)
+                .addInterceptor(AcceloAuthInterceptor(localDataSource))
+                .build()
+        return Retrofit.Builder()
+                //TODO should be dynamic
+                .baseUrl("https://nk-company-2019.api.accelo.com/")
+                .client(client)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(
+                        GsonConverterFactory.create(
+                                GsonBuilder()
+                                        .setLenient()
+                                        .create()
+                        )
+                )
+                .build()
+                .create(AcceloService::class.java)
     }
 
     @Singleton
@@ -59,6 +59,12 @@ class AppModule {
     @Provides
     fun provideActivityDao(context: Context): ActivityDao {
         return ActivityDatabase.getInstance(context).activityDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideLocalDataSource(sharedPreferences: SharedPreferences): LocalDataSource {
+        return LocalDataSource(sharedPreferences)
     }
 }
 

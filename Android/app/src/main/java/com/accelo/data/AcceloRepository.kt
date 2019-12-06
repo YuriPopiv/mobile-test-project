@@ -30,18 +30,18 @@ class AcceloRepository @Inject constructor(
     private val service: AcceloService
 ) {
 
-    private val url = "https://${localDataSource.deployment}.api.accelo.com/"
+    private val url = "https://${localDataSource.getDeploymentName()}.api.accelo.com/"
 
     fun saveDeploymentName(deployment: String): Completable {
         return Completable.fromAction {
-            localDataSource.deployment = deployment
+            localDataSource.saveDeploymentName(deployment)
         }
     }
 
     fun getToken(code: String): Single<UserResponse> {
         return service.getToken(code)
             .doOnSuccess {
-                localDataSource.accessToken = it.accessToken
+                localDataSource.saveToken(it.accessToken)
             }
     }
 
@@ -90,8 +90,7 @@ class AcceloRepository @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
-                localDataSource.hasNotDeliveredActivities = true
-
+                localDataSource.saveNotDeliveredActivitiesState(true)
             }
 
 
@@ -102,7 +101,7 @@ class AcceloRepository @Inject constructor(
     }
 
     fun deleteActivities(){
-        localDataSource.hasNotDeliveredActivities = false
+        localDataSource.saveNotDeliveredActivitiesState(false)
         dataSource.deleteAllActivities()
     }
 
