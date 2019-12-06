@@ -52,10 +52,10 @@ class AcceloRepository @Inject constructor(
             .map { it.response }
     }
 
-    fun getListActivity(page: Int): Single<ActivityData> {
+    fun getListActivity(page: Int, query: String? = null): Single<ActivityData> {
         val fields = "interacts,date_logged,preview_body"
         val pageLimit = 20
-        return service.getListActivity(fields, pageLimit, page)
+        return service.getListActivity(fields, pageLimit, page, query)
             .map { it.response }
     }
 
@@ -69,10 +69,6 @@ class AcceloRepository @Inject constructor(
         val fields = "id,html_body,interacts, date_logged"
         return service.getFullActivity(activityId, fields)
             .map { it.response }
-    }
-
-    fun delete(activityId: String): Single<ResponseBody> {
-        return service.deleteActivity(activityId)
     }
 
     fun getNotDeliveredActivities(): Flowable<List<PendingActivity>>{

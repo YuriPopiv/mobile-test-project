@@ -48,9 +48,9 @@ class StreamViewModel @Inject constructor(
     private val requestProcessor: PublishProcessor<String> = PublishProcessor.create()
     private lateinit var debounceDisposable: Disposable
 
-    fun getActivities(page: Int) {
+    fun getActivities(page: Int, query: String? = null) {
         if (page == PAGE_START) {
-            addSubscription(repository.getListActivity(page)
+            addSubscription(repository.getListActivity(page, query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _isLoading.postValue(true) }
@@ -59,7 +59,7 @@ class StreamViewModel @Inject constructor(
             )
         } else {
             addSubscription(
-                repository.getListActivity(page)
+                repository.getListActivity(page, query)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::onSuccessGetActivities, this::onErrorGetActivities)
@@ -76,25 +76,8 @@ class StreamViewModel @Inject constructor(
         Timber.e(throwable)
         _snackbarMessage.postValue(Event(throwable.localizedMessage))
     }
-
-    fun delete(id: String) {
-
-        addSubscription(repository.delete(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { _isLoading.postValue(true) }
-            .doFinally { _isLoading.postValue(false) }
-            .subscribe(
-                {
-                    Timber.e(it.toString())
-                }, { t ->
-                })
-        )
-
-    }
-
-    fun refresh() {
-        addSubscription(repository.getListActivity(PAGE_START)
+    fun refresh(query: String? = null) {
+        addSubscription(repository.getListActivity(PAGE_START, query)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { _isRefreshing.postValue(true) }
