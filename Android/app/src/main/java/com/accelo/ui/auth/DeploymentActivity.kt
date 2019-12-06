@@ -32,5 +32,6 @@ class DeploymentActivity : AppCompatActivity() {
             putExtra(AcceloConstants.DEPLOYMENT_NAME, deploymentName)
         }
         startActivity(intent)
+        finish()
     }
 }

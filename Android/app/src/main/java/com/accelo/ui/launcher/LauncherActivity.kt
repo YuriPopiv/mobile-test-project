@@ -29,6 +29,7 @@ class LauncherActivity: DaggerAppCompatActivity() {
             }else {
                 startActivity(Intent(this, StreamActivity::class.java))
             }
+            finish()
         })
     }
 }

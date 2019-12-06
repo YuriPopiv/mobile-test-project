@@ -44,7 +44,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.stream.StreamActivity"/>
+        <activity android:name=".ui.stream.StreamActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".ui.create.CreateActivity"/>
         <activity android:name=".ui.view.ViewActivity" />
     </application>
