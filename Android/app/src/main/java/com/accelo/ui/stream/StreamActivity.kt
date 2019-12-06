@@ -28,18 +28,18 @@ class StreamActivity : DaggerAppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: StreamViewModel
 
+    lateinit var  binding: ActivityStreamBinding
+
     private var isLoading = false
     private var isLastPage = false
     private var currentPage = PAGE_START
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = viewModelProvider(viewModelFactory)
 
-        val binding: ActivityStreamBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_stream)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_stream)
         binding.lifecycleOwner = this@StreamActivity
         binding.viewModel = this@StreamActivity.viewModel
 
@@ -70,7 +70,6 @@ class StreamActivity : DaggerAppCompatActivity() {
                     }
                     return true
                 }
-
             })
         }
 
@@ -93,29 +92,24 @@ class StreamActivity : DaggerAppCompatActivity() {
             override fun loadMoreItems() {
                 isLoading = true
                 currentPage++
-
-                viewModel.getActivities(currentPage)
+                viewModel.getActivities(currentPage, getSearchQuery())
             }
         })
+
+        binding.refresh.setOnRefreshListener {
+            viewModel.refresh(getSearchQuery())
+        }
 
         viewModel.getActivities(currentPage)
 
         viewModel.activityData.observe(this, EventObserver {
-            //Deletion trick
-//            val list = it.threads?.filter {
-//                it.interacts?.find { owner -> owner.ownerName.equals("Yuri Popiv") } != null
-//            }
-//            list?.forEach {
-//
-//                viewModel.delete(it.id!!)
-//            }
+
             if (!it.threads.isNullOrEmpty()) {
                 adapter.removeLoadingFooter()
                 adapter.addAll(it.threads!!)
                 adapter.addLoadingFooter()
                 isLoading = false
-            }
-            else {
+            } else {
                 isLastPage = true
 
                 adapter.removeLoadingFooter()
@@ -147,6 +141,8 @@ class StreamActivity : DaggerAppCompatActivity() {
         })
     }
 
+    private fun getSearchQuery(): String? = binding.searchView.query.toString().ifBlank { null }
+
     private fun showConfidentialDialog() {
         val alertDialog = AlertDialog.Builder(this).create()
         alertDialog.setTitle(getString(R.string.confidential_activity))
@@ -155,7 +151,7 @@ class StreamActivity : DaggerAppCompatActivity() {
         alertDialog.setButton(
             AlertDialog.BUTTON_POSITIVE,
             getString(R.string.ok)
-        ) { dialogInterface, i ->
+        ) { _, _ ->
             alertDialog.dismiss()
         }
 

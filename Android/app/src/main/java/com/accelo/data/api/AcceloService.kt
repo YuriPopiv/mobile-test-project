@@ -32,22 +32,21 @@ interface AcceloService {
         @Query("body") body: String
     ): Single<ResponseModel<CreatePostData>>
 
-    @DELETE("api/v0/activities/{activity_id}")
-    fun deleteActivity(@Path("activity_id") activityId: String): Single<ResponseBody>
-
     @GET("api/v0/activities/threads")
     fun getListActivity(
         @Query("_fields") fields: String,
         @Query("_limit") limit: Int,
-        @Query("_page") page: Int
+        @Query("_page") page: Int,
+        @Query("q") query: String? = null
     ): Single<ResponseModel<ActivityData>>
 
 
     @GET("api/v0/activities/threads")
     fun search(
         @Query("_fields") fields: String,
-        @Query("q") query: String
-    ): Single<ResponseModel<ActivityData>>
+        @Query("q") query: String,
+        @Query("_limit") limit: Int = 20
+        ): Single<ResponseModel<ActivityData>>
 
     @GET("api/v0/activities/{activityId}")
     fun getFullActivity(@Path("activityId") activityId: String,
