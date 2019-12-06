@@ -72,10 +72,7 @@ class AcceloRepository @Inject constructor(
     }
 
     fun getNotDeliveredActivities(): Flowable<List<PendingActivity>>{
-
         return Flowable.fromCallable { dataSource.getActivities() }
-
-
     }
 
     fun hasNotDeliveredActivities(): Boolean = localDataSource.hasNotDeliveredActivities()
@@ -94,7 +91,7 @@ class AcceloRepository @Inject constructor(
 
     }
 
-    fun deleteActivity(activity: PendingActivity){
+    fun deleteActivity(activity: PendingActivity) {
         dataSource.deleteActivity(activity)
     }
 
