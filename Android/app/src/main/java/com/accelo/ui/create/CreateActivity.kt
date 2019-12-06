@@ -8,7 +8,11 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.Constraints
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.accelo.R
@@ -18,6 +22,7 @@ import com.accelo.util.viewModelProvider
 import com.accelo.workers.DeliveryWorker
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -80,21 +85,17 @@ class CreateActivity : DaggerAppCompatActivity() {
         builder.setMessage("No Internet connection, unable to submit the activity.\nDo you want to retry now?")
         builder.setNegativeButton("Cancel", null)
         builder.setNeutralButton("Submit Later") { _, _ ->
-
+            scheduleDelivery()
             viewModel.saveNotDeliveredActivitiesToDB(
                 binding.subject.text.toString(),
                 binding.body.text.toString()
             )
+            finish()
         }
         builder.setPositiveButton("Retry Now") { _, _ ->
             createActivityAttempt()
         }
         builder.create().show()
-    }
-
-    fun scheduleDelivery() {
-        val request = OneTimeWorkRequestBuilder<DeliveryWorker>().build()
-        WorkManager.getInstance(this@CreateActivity).enqueue(request)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -113,6 +114,25 @@ class CreateActivity : DaggerAppCompatActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun scheduleDelivery(){
+
+        //Of this is fist failure, schedule delivery when network will be available,
+        // otherwise we assume that worker is already enqueued
+        if (!viewModel.hasNotDeliveredActivities()) {
+
+            //Schedule re-attemt when network will be available
+            val constraints =
+                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+            val request =
+                OneTimeWorkRequestBuilder<DeliveryWorker>().setConstraints(constraints).build()
+            WorkManager.getInstance(this).enqueue(request)
+            WorkManager.getInstance(this).getWorkInfoByIdLiveData(request.id)
+                .observe(ProcessLifecycleOwner.get(), Observer {
+                    Timber.e("Worker status $it")
+                })
         }
     }
 
