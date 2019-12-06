@@ -39,6 +39,7 @@ class CreateViewModel @Inject constructor(
 
 
     fun createActivity(body: String, subject: String) {
+        //TODO Create Interceptor for checking network
         if (networkUtils.hasNetworkConnection()) {
             subscription.add(repo.createActivity(body, subject)
                 .subscribeOn(Schedulers.io())
@@ -72,6 +73,8 @@ class CreateViewModel @Inject constructor(
             }
             .subscribe()
     }
+
+    fun hasNotDeliveredActivities() = repo.hasNotDeliveredActivities()
 
 
     override fun onCleared() {

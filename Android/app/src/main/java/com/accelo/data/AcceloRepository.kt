@@ -78,6 +78,8 @@ class AcceloRepository @Inject constructor(
 
     }
 
+    fun hasNotDeliveredActivities(): Boolean = localDataSource.hasNotDeliveredActivities()
+
     fun saveActivityForFutureDelivery(subject: String, body: String): Completable{
         val activity = PendingActivity(
             System.currentTimeMillis() ,AGAINST_ID, AGAINST_TYPE, MEDIUM, OWNER_TYPE, VISIBILITY, subject, body

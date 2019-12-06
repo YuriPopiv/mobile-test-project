@@ -1,4 +1,4 @@
-package com.accelo.di
+package com.accelo.workers
 
 import android.content.Context
 import androidx.work.ListenableWorker
@@ -12,6 +12,8 @@ import kotlin.reflect.KClass
 
 /**
  * Created by Yuri Popiv on 12/4/2019.
+ *
+ * Factory for the [DeliveryWorker]
  */
 class DeliveryWorkerFactory @Inject constructor(
     private val repository: AcceloRepository

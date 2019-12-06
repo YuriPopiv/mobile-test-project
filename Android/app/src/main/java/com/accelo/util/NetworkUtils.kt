@@ -9,6 +9,7 @@ import javax.inject.Inject
 /**
  * Created by Yuri Popiv on 12/3/2019.
  *
+ * Checks if a network connection exists.
  */
 class NetworkUtils @Inject constructor(val context: Context) {
 
@@ -27,4 +28,6 @@ class NetworkUtils @Inject constructor(val context: Context) {
             return networkInfo.isConnected
         }
     }
+
+
 }

@@ -21,6 +21,8 @@ import javax.inject.Singleton
 
 /**
  * Created by Yuri Popiv on 11/26/2019.
+ *
+ * Defines all classes that are widely used in the app.
  */
 @Module
 class AppModule {
@@ -40,6 +42,7 @@ class AppModule {
             .addInterceptor(dynamicUrlInterceptor)
             .build()
         return Retrofit.Builder()
+            //Deployment name is dynamically added in DynamicUrlInterceptor
             .baseUrl("https://api.accelo.com/")
             .client(client)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

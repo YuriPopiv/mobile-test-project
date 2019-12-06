@@ -7,6 +7,7 @@ import com.accelo.data.AcceloRepository
 import com.accelo.data.base.BaseViewModel
 import com.accelo.data.model.ActivityData
 import com.accelo.util.Event
+import com.accelo.util.NetworkUtils
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,7 +22,8 @@ import javax.inject.Inject
  * Created by Yuri Popiv on 11/26/2019.
  */
 class StreamViewModel @Inject constructor(
-    private val repository: AcceloRepository
+    private val repository: AcceloRepository,
+    private val networkUtils: NetworkUtils
 ) : BaseViewModel() {
 
     val activityData: LiveData<Event<ActivityData>> get() = _activityData
@@ -49,21 +51,26 @@ class StreamViewModel @Inject constructor(
     private lateinit var debounceDisposable: Disposable
 
     fun getActivities(page: Int, query: String? = null) {
-        if (page == PAGE_START) {
-            addSubscription(repository.getListActivity(page, query)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { _isLoading.postValue(true) }
-                .doFinally { _isLoading.postValue(false) }
-                .subscribe(this::onSuccessGetActivities, this::onErrorGetActivities)
-            )
-        } else {
-            addSubscription(
-                repository.getListActivity(page, query)
+        if (networkUtils.hasNetworkConnection()) {
+            if (page == PAGE_START) {
+                addSubscription(repository.getListActivity(page, query)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { _isLoading.postValue(true) }
+                    .doFinally { _isLoading.postValue(false) }
                     .subscribe(this::onSuccessGetActivities, this::onErrorGetActivities)
-            )
+                )
+            } else {
+                addSubscription(
+                    repository.getListActivity(page, query)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::onSuccessGetActivities, this::onErrorGetActivities)
+                )
+            }
+        }else{
+            _snackbarMessage.postValue(Event("No network connection"))
+            _isLoading.postValue(false)
         }
     }
 
