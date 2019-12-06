@@ -1,5 +1,7 @@
 package com.accelo.ui.create
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,6 +20,7 @@ import com.accelo.util.viewModelProvider
 import com.accelo.workers.DeliveryWorker
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 /**
@@ -54,8 +57,10 @@ class CreateActivity : DaggerAppCompatActivity() {
             showNoNetworkErrorDialog()
         })
 
+        //data may not update in the StreamActivity because there is delay on the server after activity is created
         viewModel.activityData.observe(this, EventObserver {
             Toast.makeText(this@CreateActivity, "Activity Created", Toast.LENGTH_SHORT).show()
+            setResult(Activity.RESULT_OK, Intent())
             finish()
         })
 
