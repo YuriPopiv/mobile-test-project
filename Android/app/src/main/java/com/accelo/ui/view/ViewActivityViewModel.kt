@@ -21,8 +21,8 @@ class ViewActivityViewModel @Inject constructor(private val repository: AcceloRe
     val fullActivityResponse: LiveData<Event<FullActivity>> get() = _fullActivityResponse
     private val _fullActivityResponse = MutableLiveData<Event<FullActivity>>()
 
-    val snackbarMessage: LiveData<String> get() = _snackbarMessage
-    private val _snackbarMessage = MutableLiveData<String>()
+    val snackbarMessage: LiveData<Event<String>> get() = _snackbarMessage
+    private val _snackbarMessage = MutableLiveData<Event<String>>()
 
     val isLoading: LiveData<Boolean> get() = _isLoading
     private val _isLoading = MutableLiveData(true)
@@ -46,6 +46,6 @@ class ViewActivityViewModel @Inject constructor(private val repository: AcceloRe
     private fun onErrorGetFullActivity(throwable: Throwable) {
         Timber.e(throwable)
         _isLoading.postValue(false)
-        _snackbarMessage.postValue(throwable.localizedMessage)
+        _snackbarMessage.postValue(Event(throwable.localizedMessage))
     }
 }

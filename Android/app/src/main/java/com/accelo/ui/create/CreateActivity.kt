@@ -46,7 +46,7 @@ class CreateActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        viewModel.errorMessage.observe(this, EventObserver { reason ->
+        viewModel.snackbarMessage.observe(this, EventObserver { reason ->
             Snackbar.make(binding.root, reason, Snackbar.LENGTH_SHORT).show()
         })
 
