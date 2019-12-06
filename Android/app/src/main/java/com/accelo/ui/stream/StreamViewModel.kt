@@ -93,7 +93,7 @@ class StreamViewModel @Inject constructor(
 
     }
 
-    fun onSwipeRefresh() {
+    fun refresh() {
         addSubscription(repository.getListActivity(PAGE_START)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -152,7 +152,7 @@ class StreamViewModel @Inject constructor(
         _snackbarMessage.postValue(Event(throwable.localizedMessage))
     }
 
-    companion object{
+    companion object {
         private const val REQUEST_DELAY = 500L
     }
 }

@@ -17,7 +17,6 @@ import com.accelo.util.KeyboardUtil.dismissKeyboard
 import com.accelo.util.viewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -66,6 +65,8 @@ class StreamActivity : DaggerAppCompatActivity() {
                 override fun onQueryTextChange(query: String): Boolean {
                     if(query.isNotEmpty()) {
                         viewModel.search(query)
+                    } else {
+                        viewModel.refresh()
                     }
                     return true
                 }
@@ -133,6 +134,7 @@ class StreamActivity : DaggerAppCompatActivity() {
         viewModel.searchData.observe(this, EventObserver{
             if (!it.threads.isNullOrEmpty()) {
                 adapter.replaceAll(it.threads!!)
+                adapter.removeLoadingFooter()
                 isLoading = false
                 isLastPage = false
                 currentPage = PAGE_START
