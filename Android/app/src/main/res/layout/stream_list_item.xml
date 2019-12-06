@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/margin_normal">
+        android:layout_marginTop="@dimen/margin_small">
 
         <TextView
             android:id="@+id/title"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="16sp"
             tools:text="Yuri Popiv"/>
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
             tools:text="Yuri Popiv"/>
 
         <TextView
@@ -67,7 +67,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:visibility="gone"
             tools:text="Yuri Popiv"/>
 
 

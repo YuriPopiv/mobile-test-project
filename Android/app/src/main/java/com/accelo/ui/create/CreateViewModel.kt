@@ -35,7 +35,7 @@ class CreateViewModel @Inject constructor(
         get() = _navigateToNetworkErrorDialogAction
 
     val isLoading: LiveData<Boolean> get() = _isLoading
-    private val _isLoading = MutableLiveData(true)
+    private val _isLoading = MutableLiveData(false)
 
 
     fun createActivity(body: String, subject: String) {
@@ -67,9 +67,10 @@ class CreateViewModel @Inject constructor(
 
     fun saveNotDeliveredActivitiesToDB(body: String, subject: String){
         repo.saveActivityForFutureDelivery(body, subject)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {  }
+            .doOnComplete {
+                Timber.e("Not delivered activities saved to the DB")
+            }
+            .subscribe()
     }
 
 

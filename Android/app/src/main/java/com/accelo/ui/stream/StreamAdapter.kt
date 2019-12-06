@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.accelo.R
 import com.accelo.data.base.BaseRecyclerAdapter
@@ -81,8 +82,20 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
                     viewHolder.title.text = subject
                     viewHolder.content.text = previewBody
                     var interacters = ""
-                    interacts?.forEach { owner: Owner -> interacters += "${owner.ownerName}," }
-                    viewHolder.interact.text = interacters
+                    interacts
+                        ?.filter { owner -> owner.type == "to" || owner.type == "cc"}
+                        ?.forEach{ owner ->
+                            interacters +=
+                                if (interacters.isBlank())
+                                    "${owner.ownerName}"
+                                else
+                                    ",${owner.ownerName}"
+                    }
+                    if (!interacters.isBlank()){
+                        viewHolder.interact.isVisible = true
+                        viewHolder.interact.text = interacters
+                    }
+
 
                     viewHolder.streamItemLayout.setOnClickListener {
                         itemClickedListener(item)
