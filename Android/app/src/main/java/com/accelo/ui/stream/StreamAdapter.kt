@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.accelo.R
 import com.accelo.data.base.BaseRecyclerAdapter
@@ -90,7 +91,11 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
                                 else
                                     ",${owner.ownerName}"
                     }
-                    viewHolder.interact.text = interacters
+                    if (!interacters.isBlank()){
+                        viewHolder.interact.isVisible = true
+                        viewHolder.interact.text = interacters
+                    }
+
 
                     viewHolder.streamItemLayout.setOnClickListener {
                         itemClickedListener(item)
