@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.accelo.R
 import com.accelo.data.base.BaseRecyclerAdapter
-import com.accelo.data.model.Owner
 import com.accelo.data.model.Thread
 import com.accelo.util.DateUtil
 import kotlinx.android.synthetic.main.stream_list_item.view.*
@@ -22,11 +21,13 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
     private lateinit var context: Context
     private var isLoadingAdded: Boolean = false
 
+    //adding one empty item for showing loading footer when more data loading
     fun addLoadingFooter() {
         isLoadingAdded = true
         add(Thread())
     }
 
+    //removing loading footer for adding new portion of data
     fun removeLoadingFooter() {
         isLoadingAdded = false
 
@@ -124,7 +125,7 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
     }
 
     companion object {
-        private const val ITEM = 0
-        private const val LOADING = 1
+        private const val ITEM = 0 // normal item
+        private const val LOADING = 1 // footer progress item
     }
 }

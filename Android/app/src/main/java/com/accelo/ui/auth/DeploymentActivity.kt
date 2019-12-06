@@ -49,7 +49,7 @@ class DeploymentActivity : AppCompatActivity() {
     private fun openAuthPage(deploymentName: String){
 
         if (deploymentName.isBlank()){
-            binding.login.error = "Deployment name can't be empty"
+            binding.login.error = getString(R.string.empty_deployment_name)
             binding.login.requestFocus()
         }
 

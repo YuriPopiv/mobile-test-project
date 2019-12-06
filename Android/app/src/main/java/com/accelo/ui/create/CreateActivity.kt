@@ -63,7 +63,7 @@ class CreateActivity : DaggerAppCompatActivity() {
 
         //data may not update in the StreamActivity because there is delay on the server after activity is created
         viewModel.activityData.observe(this, EventObserver {
-            Toast.makeText(this@CreateActivity, "Activity Created", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@CreateActivity, getString(R.string.activity_created), Toast.LENGTH_SHORT).show()
             setResult(Activity.RESULT_OK, Intent())
             finish()
         })
@@ -86,9 +86,9 @@ class CreateActivity : DaggerAppCompatActivity() {
     private fun showNoNetworkErrorDialog() {
         val builder = AlertDialog.Builder(this)
         //builder.setTitle("Error")
-        builder.setMessage("No Internet connection, unable to submit the activity.\nDo you want to retry now?")
-        builder.setNegativeButton("Cancel", null)
-        builder.setNeutralButton("Submit Later") { _, _ ->
+        builder.setMessage(getString(R.string.network_error_message))
+        builder.setNegativeButton(getString(R.string.cancel), null)
+        builder.setNeutralButton(getString(R.string.submit_later)) { _, _ ->
             scheduleDelivery()
             viewModel.saveNotDeliveredActivitiesToDB(
                 binding.subject.text.toString(),
@@ -96,7 +96,7 @@ class CreateActivity : DaggerAppCompatActivity() {
             )
             finish()
         }
-        builder.setPositiveButton("Retry Now") { _, _ ->
+        builder.setPositiveButton(getString(R.string.retry_now)) { _, _ ->
             createActivityAttempt()
         }
         builder.create().show()
@@ -123,7 +123,7 @@ class CreateActivity : DaggerAppCompatActivity() {
 
     private fun scheduleDelivery(){
 
-        //Of this is fist failure, schedule delivery when network will be available,
+        //If this is fist failure, schedule delivery when network will be available,
         // otherwise we assume that worker is already enqueued
         if (!viewModel.hasNotDeliveredActivities()) {
 
@@ -145,7 +145,7 @@ class CreateActivity : DaggerAppCompatActivity() {
         val body = binding.body.text.toString()
 
         if (subject.isBlank()) {
-            binding.subject.error = "This field is required"
+            binding.subject.error = getString(R.string.required_field)
             binding.subject.requestFocus()
         } else {
             viewModel.createActivity(subject, body)

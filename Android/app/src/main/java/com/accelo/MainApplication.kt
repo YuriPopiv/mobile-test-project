@@ -1,21 +1,11 @@
 package com.accelo
 
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
-import androidx.core.content.getSystemService
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.Observer
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.work.*
-import com.accelo.data.LocalDataSource
+import androidx.work.Configuration
+import androidx.work.WorkManager
 import com.accelo.di.DaggerAppComponent
 import com.accelo.workers.DeliveryWorkerFactory
-import com.accelo.util.NetworkUtils
-import com.accelo.workers.DeliveryWorker
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import timber.log.Timber
