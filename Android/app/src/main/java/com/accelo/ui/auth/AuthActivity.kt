@@ -14,6 +14,7 @@ import com.accelo.R
 import com.accelo.util.AcceloConstants
 import com.accelo.util.viewModelProvider
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -66,6 +67,7 @@ class AuthActivity : DaggerAppCompatActivity() {
                 }
 
                 override fun onServiceDisconnected(p0: ComponentName?) {
+                    Timber.e("Chrome service disconnected")
                 }
 
 
