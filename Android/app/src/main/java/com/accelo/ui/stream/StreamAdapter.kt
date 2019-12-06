@@ -29,7 +29,7 @@ class StreamAdapter(private val itemClickedListener: (Thread) -> Unit) :
     fun removeLoadingFooter() {
         isLoadingAdded = false
 
-        if (getItems().isNotEmpty())
+        if (getItems().isNotEmpty() && getItems().last().id == null)
             removeAt(getItems().size - 1)
     }
 
