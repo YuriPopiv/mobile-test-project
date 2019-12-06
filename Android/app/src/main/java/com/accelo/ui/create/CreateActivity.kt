@@ -20,7 +20,6 @@ import com.accelo.util.viewModelProvider
 import com.accelo.workers.DeliveryWorker
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 /**
