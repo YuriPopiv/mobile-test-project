@@ -32,7 +32,7 @@ class AuthActivity : DaggerAppCompatActivity() {
         val deploymentName = intent?.extras?.getString(AcceloConstants.DEPLOYMENT_NAME, "")
         val viewModel: AuthViewModel = viewModelProvider(factory)
 
-        if (deploymentName != null) {
+        if (!deploymentName.isNullOrEmpty()) {
 
             viewModel.saveDeploymentName(deploymentName)
 
@@ -75,8 +75,6 @@ class AuthActivity : DaggerAppCompatActivity() {
 
             val ok = CustomTabsClient
                 .bindCustomTabsService(this, CHROME_PACKAGE, connection)
-        }else{
-            //TODO handle error
         }
     }
 
