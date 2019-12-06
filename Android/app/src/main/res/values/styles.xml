@@ -7,6 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <!--disable transition animation-->
+        <!--UI is jumping to top on start-->
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 
 </resources>

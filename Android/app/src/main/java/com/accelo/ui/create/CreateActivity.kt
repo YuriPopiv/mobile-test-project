@@ -37,6 +37,9 @@ class CreateActivity : DaggerAppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create)
         viewModel = viewModelProvider(viewModelFactory)
 
+        binding.lifecycleOwner = this@CreateActivity
+        binding.viewModel = this@CreateActivity.viewModel
+
         // Set up ActionBar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
