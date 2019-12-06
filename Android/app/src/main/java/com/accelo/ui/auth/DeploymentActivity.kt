@@ -7,13 +7,17 @@ import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.accelo.R
+import com.accelo.data.interceptors.DynamicUrlInterceptor
 import com.accelo.databinding.ActivityDeploymentBinding
 import com.accelo.util.AcceloConstants
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
 /**
  * Created by Yuri Popiv on 11/26/2019.
  */
 class DeploymentActivity : AppCompatActivity() {
+
 
     lateinit var binding: ActivityDeploymentBinding
 
