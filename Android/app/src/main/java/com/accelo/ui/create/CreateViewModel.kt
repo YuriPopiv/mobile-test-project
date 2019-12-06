@@ -77,9 +77,12 @@ class CreateViewModel @Inject constructor(
         Timber.d("onSuccessSaveNotDeliveredActivitiesToDb")
     }
 
+
+    fun hasNotDeliveredActivities() = repository.hasNotDeliveredActivities()
+
+
     private fun onErrorSaveNotDeliveredActivitiesToDb(throwable: Throwable) {
         Timber.e(throwable)
         _snackbarMessage.postValue(Event(throwable.localizedMessage))
     }
-
 }

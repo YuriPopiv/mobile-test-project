@@ -12,30 +12,29 @@ import timber.log.Timber
 
 /**
  * Created by Yuri Popiv on 12/3/2019.
+ *
+ * Delivery Worker creates the activities that weren't send to server due to Network issues
  */
-
 class DeliveryWorker(
-    private val context: Context,
+    context: Context,
     workerParameters: WorkerParameters,
     private val repository: AcceloRepository
 ) : RxWorker(context, workerParameters) {
 
 
     override fun createWork(): Single<Result> {
-        var errorsCount = 0
-        var successCount = 0
         return repository.getNotDeliveredActivities()
             .flatMap { t: List<PendingActivity> -> Flowable.fromIterable(t) }
             .flatMap {activity : PendingActivity ->
                 return@flatMap repository.createActivity( activity.subject, activity.body)
                     .doOnSuccess {
-                        Timber.e("SUCCESS ${activity}")
-                        successCount++
+                        Timber.e("Activity created $activity")
                         repository.deleteActivity(activity)
                     }
                     .onErrorReturn {
-                        errorsCount++
-                        Timber.e("ERROR ${activity}")
+                        Timber.e("Error creating activity $activity")
+                        //If we get back the 400, 500, activity will be deleted from the device
+                        //It will be not created during future retry
                         if (it is HttpException){
                             repository.deleteActivity(activity)
                         }else{
@@ -43,43 +42,15 @@ class DeliveryWorker(
                         }
                         CreatePostData()
                     }
-//                    .doOnError {error ->
-//                        Timber.e("ERROR")
-//                        if (error is HttpException){
-//                            when(error.code()){
-//                                400 -> //Bad request
-//                                401 ->
-//                                    //NOT AUTHORIZED
-//                                402 ->
-//                                    //FORBIDDEN
-//                                404 ->
-//                                    //NOT FOUND
-//
-//                                500 ->
-//                                //INTERNAL SERVER ERROR
-//                            }
-//                            //repository.deleteActivity(activity)
-//                        }else{
-//                            errorsCount++
-//
-//                        }
-//                    }
                     .toFlowable()
             }//Just For combining result
             .collect({ mutableListOf<String>()}, { _, _: CreatePostData? ->
 
             })
             .map {
-                Timber.e("${errorsCount} Errors")
-                Timber.e("${successCount} Success")
-
-                    Timber.e("DONE")
+                    Timber.e("All activities successfully created")
                     repository.deleteActivities()
                     Result.success()
-
-//                }else{
-//                    Result.retry()
-//                }
             }
 
     }

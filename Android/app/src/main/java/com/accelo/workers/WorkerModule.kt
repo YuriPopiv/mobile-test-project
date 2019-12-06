@@ -1,8 +1,6 @@
-package com.accelo.di
+package com.accelo.workers
 
-import androidx.work.Worker
 import androidx.work.WorkerFactory
-import com.accelo.workers.DeliveryWorker
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
