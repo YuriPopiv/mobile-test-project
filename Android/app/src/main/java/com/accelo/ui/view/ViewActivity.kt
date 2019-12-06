@@ -15,6 +15,7 @@ import com.accelo.databinding.ActivityViewBinding
 import com.accelo.util.DateUtil.getTimeFromTimeStamp
 import com.accelo.util.EventObserver
 import com.accelo.util.viewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,6 +51,9 @@ class ViewActivity : DaggerAppCompatActivity() {
             setActivityInfo(it)
         })
 
+        viewModel.snackbarMessage.observe(this, EventObserver {
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

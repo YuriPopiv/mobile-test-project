@@ -1,5 +1,6 @@
 package com.accelo.ui.stream
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.SearchView
@@ -74,7 +75,7 @@ class StreamActivity : DaggerAppCompatActivity() {
         }
 
         binding.createActivity.setOnClickListener {
-            startActivity(Intent(this, CreateActivity::class.java))
+            startActivityForResult(Intent(this, CreateActivity::class.java), ACTIVITY_REQUEST_CODE)
         }
 
         val recyclerView = binding.recyclerView
@@ -141,6 +142,16 @@ class StreamActivity : DaggerAppCompatActivity() {
         })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data == null) {
+            return
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == ACTIVITY_REQUEST_CODE) {
+            viewModel.refresh()
+        }
+    }
+
     private fun getSearchQuery(): String? = binding.searchView.query.toString().ifBlank { null }
 
     private fun showConfidentialDialog() {
@@ -160,3 +171,4 @@ class StreamActivity : DaggerAppCompatActivity() {
 }
 
 const val PAGE_START = 0
+const val ACTIVITY_REQUEST_CODE = 1
