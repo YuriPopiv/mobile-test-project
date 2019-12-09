@@ -9,30 +9,27 @@ import javax.inject.Inject
  */
 class LocalDataSource @Inject constructor(private val prefs: SharedPreferences) {
 
-    private var _accessToken: String? = prefs.getString(KEY_USER_TOKEN, null)
+    fun saveToken(token: String) = prefs.edit { putString(KEY_USER_TOKEN, token) }
 
-    var accessToken: String? = _accessToken
-    set(value) {
-        prefs.edit { putString(KEY_USER_TOKEN, value) }
-        field = value
-    }
+    fun getToken(): String = prefs.getString(KEY_USER_TOKEN, "") ?: ""
 
-    private var _deployment: String? = prefs.getString(KEY_DEPLOYMENT, null)
+    fun saveDeploymentName(deploymentName: String) = prefs.edit { putString(KEY_DEPLOYMENT, deploymentName) }
 
-    var deployment: String? = _deployment
-        set(value) {
-            prefs.edit { putString(KEY_DEPLOYMENT, value) }
-            field = value
-        }
+    fun getDeploymentName(): String = prefs.getString(KEY_DEPLOYMENT, "") ?: ""
 
-    fun clearData(){
-        prefs.edit { KEY_USER_TOKEN to null }
-        prefs.edit { KEY_DEPLOYMENT to null }
-        accessToken = null
+    fun saveNotDeliveredActivitiesState(state: Boolean) = prefs.edit { putBoolean(KEY_ACTIVITIES, state) }
+
+    fun hasNotDeliveredActivities(): Boolean = prefs.getBoolean(KEY_ACTIVITIES, false)
+
+    fun clearData() {
+        prefs.edit { KEY_USER_TOKEN to "" }
+        prefs.edit { KEY_DEPLOYMENT to "" }
+        prefs.edit { KEY_ACTIVITIES to false }
     }
 
     companion object {
         const val KEY_USER_TOKEN = "KEY_USER_TOKEN"
         const val KEY_DEPLOYMENT = "KEY_DEPLOYMENT"
+        const val KEY_ACTIVITIES = "KEY_ACTIVITIES"
     }
 }

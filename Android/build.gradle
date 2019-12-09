@@ -42,4 +42,6 @@ ext {
     rxAndroidVersion = '2.1.1'
     preferenceManagerVersion = '1.1.0'
     glideVersion = '4.8.0'
+    roomVersion = '2.1.0-alpha06'
+    workVersion = '2.2.0'
 }

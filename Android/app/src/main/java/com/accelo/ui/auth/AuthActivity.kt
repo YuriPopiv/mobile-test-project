@@ -14,6 +14,7 @@ import com.accelo.R
 import com.accelo.util.AcceloConstants
 import com.accelo.util.viewModelProvider
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -31,7 +32,7 @@ class AuthActivity : DaggerAppCompatActivity() {
         val deploymentName = intent?.extras?.getString(AcceloConstants.DEPLOYMENT_NAME, "")
         val viewModel: AuthViewModel = viewModelProvider(factory)
 
-        if (deploymentName != null) {
+        if (!deploymentName.isNullOrEmpty()) {
 
             viewModel.saveDeploymentName(deploymentName)
 
@@ -66,6 +67,7 @@ class AuthActivity : DaggerAppCompatActivity() {
                 }
 
                 override fun onServiceDisconnected(p0: ComponentName?) {
+                    Timber.e("Chrome service disconnected")
                 }
 
 
@@ -73,8 +75,6 @@ class AuthActivity : DaggerAppCompatActivity() {
 
             val ok = CustomTabsClient
                 .bindCustomTabsService(this, CHROME_PACKAGE, connection)
-        }else{
-            //TODO handle error
         }
     }
 
