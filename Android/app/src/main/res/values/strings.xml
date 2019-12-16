@@ -2,4 +2,31 @@
     <string name="app_name">Accelo</string>
     <string name="deployment">Deployment</string>
     <string name="login">Login</string>
+    <string name="send">Send</string>
+    <string name="create_activity">Create Activity</string>
+    <string name="body">Body</string>
+    <string name="subject">Subject:</string>
+
+    <!--Toolbar titles-->
+    <string name="activity_info">Activity info details</string>
+    
+    <!--Dialog-->
+    <string name="confidential_activity">Confidential activity</string>
+    <string name="confidential_message">This activity is confidential. You are not able to see it.</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="network_error_message">No Internet connection, unable to submit the activity.
+Do you want to retry now?</string>
+    <string name="submit_later">Submit Later</string>
+    <string name="retry_now">Retry Now</string>
+
+    <!--Toasts-->
+    <string name="activity_created">Activity Created</string>
+
+    <!--Errors-->
+    <string name="required_field">This field is required</string>
+    <string name="empty_deployment_name">Deployment name can\'t be empty</string>
+
+    <!--Mocked strings-->
+    <string name="loreem_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed pretium nisl, in bibendum augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi a mi nulla. Donec aliquam nunc leo. Morbi eu nibh id urna placerat mattis at non felis. Maecenas nec semper justo. Duis justo eros, pellentesque eu euismod eget, feugiat a metus.</string>
 </resources>

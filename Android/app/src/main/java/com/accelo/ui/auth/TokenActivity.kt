@@ -28,8 +28,11 @@ class TokenActivity: DaggerAppCompatActivity() {
         val code = data?.getQueryParameter("code")
         viewModel.getToken(code!!)
 
+
         viewModel.userResponse.observe(this, EventObserver{
-            startActivity(Intent(this, StreamActivity::class.java))
+            val intent = Intent(this, StreamActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         })
 
         viewModel.snackbarMessage.observe(this, EventObserver{

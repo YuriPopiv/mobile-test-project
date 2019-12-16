@@ -1,18 +1,17 @@
-package com.accelo.data.response
+package com.accelo.data.base
 
-import com.accelo.data.model.ActivityData
 import com.accelo.data.model.Meta
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-
 /**
- * Created by Yuri Popiv on 11/25/2019.
+ * Created by dmytro on 12/2/19
  */
-data class ActivityResponse(
+data class ResponseModel<T>(
     @SerializedName("response")
     @Expose
-    var response: ActivityData? = null,
+    var response: T? = null,
+
     @SerializedName("meta")
     @Expose
     var meta: Meta? = null

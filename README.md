@@ -1,29 +1,16 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## Android project ##
 
-### What is this repository for? ###
+### What was used ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* MVVM architecture with LiveData 
+* We used DataBinding for simplify data observing
+* We used Dagger2 for dependency injection
+* We used ROOM for for storing activities locally on device
+* We used RxJava2 for async operations
+* We used Retrofit2 for working with server API
+* We used WorkManager for managing sending stored activities
 
-### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* Also, we left comments in the code for easier understanding how it works

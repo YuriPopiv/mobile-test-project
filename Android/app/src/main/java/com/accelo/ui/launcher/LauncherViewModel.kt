@@ -16,14 +16,14 @@ class LauncherViewModel @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : ViewModel() {
 
-    private val sessinActive = MutableLiveData<Result<Boolean>>()
+    private val sessionActive = MutableLiveData<Result<Boolean>>()
 
     val launchDestination: LiveData<Event<Destination>>
 
     init {
-        sessinActive.postValue(Result.Success(localDataSource.accessToken != null))
+        sessionActive.postValue(Result.Success(localDataSource.getToken().isNotEmpty()))
 
-        launchDestination = Transformations.map(sessinActive) {
+        launchDestination = Transformations.map(sessionActive) {
             if ((it as? Result.Success)?.data == false) {
                 Event(Destination.AUTH_ACTIVITY)
             } else
