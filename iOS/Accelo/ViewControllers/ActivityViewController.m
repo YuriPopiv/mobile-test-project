@@ -31,6 +31,15 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationItem.hidesBackButton = YES;
     self.navigationItem.title = @"Activities";
+    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Add" style:UIBarButtonItemStylePlain target:nil action:nil];
+    anotherButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(id _) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        CreateActivityViewController *createActivityViewController = (CreateActivityViewController *)
+        [storyboard instantiateViewControllerWithIdentifier:@"CreateActivityViewController"];
+        [self.navigationController pushViewController:createActivityViewController animated:NO];
+        return [RACSignal empty];
+    }];
+    self.navigationItem.rightBarButtonItem = anotherButton;
 }
 
 - (void)setupTableView {
@@ -49,15 +58,15 @@
 }
 
 - (void)getActivities {
-    [_activityIndicator startAnimating];
-    [self.view addSubview:_activityIndicator];
+    [self.activityIndicator startAnimating];
+    [self.view addSubview:self.activityIndicator];
     [[APIManager sharedManager] setAuthorizationToken:self.token];
     [[APIManager sharedManager] GET:[NSString stringWithFormat:@"%@&_page=%d&_limit=20", kActivityUrl, currentPage] parameters:nil progress:nil
     success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"%@", responseObject);
         Request *request = [MTLJSONAdapter modelOfClass:Request.class fromJSONDictionary:responseObject error:nil];
-        [self->_activityIndicator stopAnimating];
-        [self->_activityIndicator removeFromSuperview];
+        [self.activityIndicator stopAnimating];
+        [self.activityIndicator removeFromSuperview];
         if ([request.response.threads count]) {
             [self.threads addObjectsFromArray:request.response.threads];
             [self.tableView reloadData];
@@ -65,8 +74,8 @@
         self->isNewDataLoading = NO;
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@", error);
-        [self->_activityIndicator stopAnimating];
-        [self->_activityIndicator removeFromSuperview];
+        [self.activityIndicator stopAnimating];
+        [self.activityIndicator removeFromSuperview];
     }];
 }
 
@@ -84,6 +93,28 @@
     Activity *activity = [self.threads[indexPath.section] activities][indexPath.row];
     [cell configure:activity];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    Activity *activity = [self.threads[indexPath.section] activities][indexPath.row];
+    if ([activity.confidential intValue] == 1) {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Alert"
+                                   message:@"This activity is confidential."
+                                   preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction * action) {}];
+
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    } else {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        ActivityDetailsViewController *activityDetailsViewController = (ActivityDetailsViewController *)
+        [storyboard instantiateViewControllerWithIdentifier:@"ActivityDetailsViewController"];
+        activityDetailsViewController.activity = activity;
+        [self.navigationController pushViewController:activityDetailsViewController animated:NO];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
