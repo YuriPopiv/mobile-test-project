@@ -13,6 +13,8 @@
 #import "APIManager.h"
 #import "Request.h"
 #import "ActivityTableViewCell.h"
+#import "ActivityDetailsViewController.h"
+#import "CreateActivityViewController.h"
 
 @interface ActivityViewController : UIViewController {
     int currentPage;

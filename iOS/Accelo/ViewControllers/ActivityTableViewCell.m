@@ -11,6 +11,10 @@
 
 @implementation ActivityTableViewCell
 
+const int secondsInMinute = 60;
+const int secondsInDay = 86400;
+const int minutesInDay = 1440;
+
 - (void)awakeFromNib {
     [super awakeFromNib];
 }
@@ -47,12 +51,12 @@
     NSDate *nowDate = [NSDate date];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:[activity.dateLogged doubleValue]];
     NSTimeInterval secondsBetween = [nowDate timeIntervalSinceDate:date];
-    int numberOfMinutes = secondsBetween / 60;
-    int numberOfDays = secondsBetween / 86400;
+    int numberOfMinutes = secondsBetween / secondsInMinute;
+    int numberOfDays = secondsBetween / secondsInDay;
     if (numberOfMinutes <= 30) {
         self.dateLogged.text = @"Now";
     }
-    if (numberOfMinutes > 30 && numberOfMinutes < 1440) {
+    if (numberOfMinutes > 30 && numberOfMinutes < minutesInDay) {
         self.dateLogged.text = @"Today";
     }
     if (numberOfDays >= 1) {
