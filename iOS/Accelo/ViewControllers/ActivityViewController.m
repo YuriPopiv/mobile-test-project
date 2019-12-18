@@ -31,15 +31,15 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationItem.hidesBackButton = YES;
     self.navigationItem.title = @"Activities";
-    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Add" style:UIBarButtonItemStylePlain target:nil action:nil];
-    anotherButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(id _) {
+    UIBarButtonItem *addActivityButton = [[UIBarButtonItem alloc] initWithTitle:@"Add" style:UIBarButtonItemStylePlain target:nil action:nil];
+    addActivityButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(id _) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         CreateActivityViewController *createActivityViewController = (CreateActivityViewController *)
         [storyboard instantiateViewControllerWithIdentifier:@"CreateActivityViewController"];
         [self.navigationController pushViewController:createActivityViewController animated:NO];
         return [RACSignal empty];
     }];
-    self.navigationItem.rightBarButtonItem = anotherButton;
+    self.navigationItem.rightBarButtonItem = addActivityButton;
 }
 
 - (void)setupTableView {
