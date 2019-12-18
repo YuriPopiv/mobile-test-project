@@ -11,6 +11,7 @@
 		84855DE323A7B1970019C3DE /* CreateActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84855DE223A7B1970019C3DE /* CreateActivityViewController.m */; };
 		84855DE623A7B2A40019C3DE /* ActivityToSave.m in Sources */ = {isa = PBXBuildFile; fileRef = 84855DE523A7B2A40019C3DE /* ActivityToSave.m */; };
 		84855DEC23A7B39B0019C3DE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 84855DEB23A7B39A0019C3DE /* Reachability.m */; };
+		848589BE23A7E99900859BAC /* UploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 848589BD23A7E99900859BAC /* UploadManager.m */; };
 		84BE984923980DB000688B6B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BE984823980DB000688B6B /* AppDelegate.m */; };
 		84BE984C23980DB000688B6B /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BE984B23980DB000688B6B /* SceneDelegate.m */; };
 		84BE984F23980DB000688B6B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BE984E23980DB000688B6B /* LoginViewController.m */; };
@@ -46,6 +47,8 @@
 		84855DE523A7B2A40019C3DE /* ActivityToSave.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActivityToSave.m; sourceTree = "<group>"; };
 		84855DEA23A7B39A0019C3DE /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		84855DEB23A7B39A0019C3DE /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		848589BC23A7E99900859BAC /* UploadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadManager.h; sourceTree = "<group>"; };
+		848589BD23A7E99900859BAC /* UploadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadManager.m; sourceTree = "<group>"; };
 		84BE984423980DB000688B6B /* Accelo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Accelo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BE984723980DB000688B6B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		84BE984823980DB000688B6B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -206,6 +209,8 @@
 			children = (
 				84BE9891239A866200688B6B /* ConvertTime.h */,
 				84BE9892239A866200688B6B /* ConvertTime.m */,
+				848589BC23A7E99900859BAC /* UploadManager.h */,
+				848589BD23A7E99900859BAC /* UploadManager.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -362,6 +367,7 @@
 				84BE987E239A83EE00688B6B /* Staff.m in Sources */,
 				84BE985A23980DB100688B6B /* main.m in Sources */,
 				84855DEC23A7B39B0019C3DE /* Reachability.m in Sources */,
+				848589BE23A7E99900859BAC /* UploadManager.m in Sources */,
 				84BE9872239A835300688B6B /* Request.m in Sources */,
 				84BE986E239A82CC00688B6B /* ActivityViewController.m in Sources */,
 				84BE9893239A866200688B6B /* ConvertTime.m in Sources */,

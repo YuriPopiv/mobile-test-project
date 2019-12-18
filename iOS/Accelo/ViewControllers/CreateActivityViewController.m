@@ -41,6 +41,7 @@
     if ([self.subjectTextField hasText]) {
         ActivityToSave *activity = [[ActivityToSave alloc] initWithSubject:self.subjectTextField.text
         andBody:self.bodyTextView.text];
+        /// check if user is online
         if (network) {
             [self.activityIndicator startAnimating];
             [self.view addSubview:self.activityIndicator];
@@ -54,11 +55,15 @@
                 if ([request.meta.status isEqualToString:@"ok"]) {
                     [self presentAlertController:@"Activity added successfully" andMessage:@"" andSuccess:YES];
                 }
+                /// if API request to accelo is successful - try to upload activities if any
+                UploadManager *uploadManager = [[UploadManager alloc] init];
+                [uploadManager uploadActivity];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 [self.activityIndicator stopAnimating];
                 [self.activityIndicator removeFromSuperview];
                 [self presentAlertController:error.localizedDescription andMessage:@"" andSuccess:NO];
             }];
+            /// if not show user an alert with two options: retry creation of activity, or save activity to realm database
         } else {
             UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"No internet connection, unable to submit the activity."
                                        message:@"Do you want to retry now?"

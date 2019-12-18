@@ -18,7 +18,7 @@ NSString *kAuthUrl = @"oauth2/v0/authorize?response_type=code&client_id=d30447b7
 NSString *kTokenUrl = @"/oauth2/v0/token?grant_type=authorization_code&code=";
 
 /// SearchURL
-NSString *kSearchUrl = @"/api/v0/activities/threads?_fields=interacts,date_logged,preview_body&q=";
+NSString *kSearchUrl = @"/api/v0/activities/threads?_fields=interacts,date_logged,preview_body";
 
 /// ActivityURLs
 NSString *kActivityUrl = @"/api/v0/activities/threads?_fields=interacts,date_logged,preview_body";

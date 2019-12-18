@@ -11,6 +11,7 @@
 #import "APIManager.h"
 #import "ConvertTime.h"
 #import "Constants.h"
+#import "UploadManager.h"
 
 @interface ActivityDetailsViewController : UIViewController
 

@@ -15,6 +15,7 @@
 #import "Request.h"
 #import "Reachability.h"
 #import "ActivityToSave.h"
+#import "UploadManager.h"
 
 @interface CreateActivityViewController : UIViewController
 

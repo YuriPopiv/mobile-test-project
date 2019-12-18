@@ -49,8 +49,8 @@ const int minutesInDay = 1440;
 
 - (void)calculateDate:(Activity *)activity {
     NSDate *nowDate = [NSDate date];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[activity.dateLogged doubleValue]];
-    NSTimeInterval secondsBetween = [nowDate timeIntervalSinceDate:date];
+    NSDate *activityDate = [NSDate dateWithTimeIntervalSince1970:[activity.dateLogged doubleValue]];
+    NSTimeInterval secondsBetween = [nowDate timeIntervalSinceDate:activityDate];
     int numberOfMinutes = secondsBetween / secondsInMinute;
     int numberOfDays = secondsBetween / secondsInDay;
     if (numberOfMinutes <= 30) {

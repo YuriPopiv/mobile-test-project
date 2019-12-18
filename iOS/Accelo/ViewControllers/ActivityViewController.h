@@ -15,10 +15,13 @@
 #import "ActivityTableViewCell.h"
 #import "ActivityDetailsViewController.h"
 #import "CreateActivityViewController.h"
+#import "UploadManager.h"
 
 @interface ActivityViewController : UIViewController {
     int currentPage;
+    int currentSearchPage;
     BOOL isNewDataLoading;
+    BOOL isSearching;
 }
 
 @property(strong, nonatomic) NSString *token;

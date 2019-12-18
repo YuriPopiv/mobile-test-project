@@ -46,10 +46,11 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.searchBar.delegate = self;
-    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
-    _activityIndicator.frame = CGRectMake(self.view.center.x, self.view.center.y, 0, 0);
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+    self.activityIndicator.frame = CGRectMake(self.view.center.x, self.view.center.y, 0, 0);
     
     currentPage = 0;
+    currentSearchPage = 0;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ActivityTableViewCell" bundle:nil] forCellReuseIdentifier:@"ActivityTableViewCell"];
     self.refreshController = [[UIRefreshControl alloc] init];
@@ -58,24 +59,23 @@
 }
 
 - (void)getActivities {
-    [self.activityIndicator startAnimating];
-    [self.view addSubview:self.activityIndicator];
+    [self startActivityIndicator];
     [[APIManager sharedManager] setAuthorizationToken:self.token];
     [[APIManager sharedManager] GET:[NSString stringWithFormat:@"%@&_page=%d&_limit=20", kActivityUrl, currentPage] parameters:nil progress:nil
     success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"%@", responseObject);
         Request *request = [MTLJSONAdapter modelOfClass:Request.class fromJSONDictionary:responseObject error:nil];
-        [self.activityIndicator stopAnimating];
-        [self.activityIndicator removeFromSuperview];
-        if ([request.response.threads count]) {
+        [self stopActivityIndicator];
+        if ([request.response.threads count] > 0) {
             [self.threads addObjectsFromArray:request.response.threads];
             [self.tableView reloadData];
         }
         self->isNewDataLoading = NO;
+        /// if API request to accelo is successful - try to upload activities if any
+        UploadManager *uploadManager = [[UploadManager alloc] init];
+        [uploadManager uploadActivity];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@", error);
-        [self.activityIndicator stopAnimating];
-        [self.activityIndicator removeFromSuperview];
+        [self stopActivityIndicator];
     }];
 }
 
@@ -121,9 +121,15 @@
     if(indexPath.section + 1 == self.threads.count && self.threads.count >= 20) {
         /// reach bottom of table view and should upload new data if any
         if (!isNewDataLoading) {
-            self->isNewDataLoading = YES;
-            self->currentPage ++;
-            [self getActivities];
+            isNewDataLoading = YES;
+            /// check if user is in search mode and make pagination for search, if not continue with normal pagination.
+            if (isSearching) {
+                currentSearchPage ++;
+                [self searchActivityWithText:self.searchBar.text];
+            } else {
+                currentPage ++;
+                [self getActivities];
+            }
         }
     }
 }
@@ -135,36 +141,63 @@
 #pragma mark - SearchBar
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [self.threads removeAllObjects];
+    [self.tableView reloadData];
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
-    [self performSelector:@selector(searchActivityWithText:) withObject:searchText afterDelay:0.5];
+    [self performSelector:@selector(searchActivityWithText:) withObject:searchText];
 }
 
 - (void)searchActivityWithText:(NSString *)searchText {
     if (searchText.length > 0) {
+        [self startActivityIndicator];
+        isSearching = YES;
         NSString *holisticSearchText = [searchText stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
-        [[APIManager sharedManager] GET:[NSString stringWithFormat:@"%@%@", kSearchUrl, holisticSearchText] parameters:nil progress:nil
+        [[APIManager sharedManager] GET:[NSString stringWithFormat:@"%@&_page=%d&_limit=20&q=%@", kSearchUrl, currentSearchPage, holisticSearchText] parameters:nil progress:nil
         success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"%@", responseObject);
-            Request *requestTest = [MTLJSONAdapter modelOfClass:Request.class fromJSONDictionary:responseObject error:nil];
-            if ([requestTest.response.threads count]) {
-                self.threads = requestTest.response.threads;
+            [self stopActivityIndicator];
+            Request *request = [MTLJSONAdapter modelOfClass:Request.class fromJSONDictionary:responseObject error:nil];
+            if ([request.response.threads count] > 0) {
+                [self.threads addObjectsFromArray:request.response.threads];
                 [self.tableView reloadData];
             }
+            self->isNewDataLoading = NO;
+            /// if API request to accelo is successful - try to upload activities if any
+            UploadManager *uploadManager = [[UploadManager alloc] init];
+            [uploadManager uploadActivity];
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"%@", error);
+            [self stopActivityIndicator];
         }];
     } else {
         /// if search text is empty, remove searched activites from array, resign search bar and get default activities list
+        isSearching = NO;
+        currentPage = 0;
+        currentSearchPage = 0;
         [self.threads removeAllObjects];
         [self.searchBar resignFirstResponder];
         [self getActivities];
     }
 }
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+}
+
+- (void)startActivityIndicator {
+    [self.activityIndicator startAnimating];
+    [self.view addSubview:self.activityIndicator];
+}
+
+- (void)stopActivityIndicator {
+    [self.activityIndicator stopAnimating];
+    [self.activityIndicator removeFromSuperview];
+}
+
 #pragma mark - Handle Refresh Method
 
 - (void)handleRefresh : (id)sender {
-    self->currentPage = 0;
+    currentPage = 0;
+    currentSearchPage = 0;
     [self.threads removeAllObjects];
     [self.tableView reloadData];
     [self.refreshController endRefreshing];

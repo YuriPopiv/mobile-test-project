@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,13 +29,16 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Michelle Green, John Steve" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPX-ce-34j">
-                        <rect key="frame" x="10" y="181" width="293" height="18"/>
+                        <rect key="frame" x="10" y="186" width="293" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit arnet, consectetur" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n3G-Ka-BwM">
-                        <rect key="frame" x="10" y="88" width="293" height="18"/>
+                        <rect key="frame" x="10" y="88" width="293" height="80"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="80" id="kdc-oT-RvF"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -56,8 +59,9 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="DJ3-6n-NiU" firstAttribute="top" secondItem="IKG-P5-Ldt" secondAttribute="bottom" constant="14" id="1S5-8X-IJ0"/>
+                    <constraint firstItem="DJ3-6n-NiU" firstAttribute="top" secondItem="buY-bg-u7O" secondAttribute="bottom" constant="10.5" id="1jD-1E-Gqk"/>
                     <constraint firstItem="buY-bg-u7O" firstAttribute="leading" secondItem="jPL-m5-rJP" secondAttribute="leading" constant="10" id="AAs-pO-QFy"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="hPX-ce-34j" secondAttribute="bottom" constant="10" id="Fdv-u2-Hh8"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="hPX-ce-34j" secondAttribute="bottom" constant="5" id="Fdv-u2-Hh8"/>
                     <constraint firstItem="n3G-Ka-BwM" firstAttribute="leading" secondItem="buY-bg-u7O" secondAttribute="leading" id="Hyn-NY-TDh"/>
                     <constraint firstItem="hPX-ce-34j" firstAttribute="leading" secondItem="buY-bg-u7O" secondAttribute="leading" id="LlT-dG-oLB"/>
                     <constraint firstItem="DJ3-6n-NiU" firstAttribute="leading" secondItem="buY-bg-u7O" secondAttribute="leading" id="UNK-ka-jAF"/>
@@ -80,7 +84,7 @@
                 <outlet property="sender" destination="IKG-P5-Ldt" id="Pt0-y4-eFf"/>
                 <outlet property="subject" destination="DJ3-6n-NiU" id="FhA-LU-Z4S"/>
             </connections>
-            <point key="canvasLocation" x="83" y="131"/>
+            <point key="canvasLocation" x="82.608695652173921" y="130.58035714285714"/>
         </tableViewCell>
     </objects>
     <resources>

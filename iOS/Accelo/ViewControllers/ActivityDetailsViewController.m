@@ -47,6 +47,9 @@
                             self.dateLabel.hidden = NO;
                             self.activityBodyTextView.hidden = NO;
                             [self setupData:htmlBody];
+                            /// if API request to accelo is successful - try to upload activities if any
+                            UploadManager *uploadManager = [[UploadManager alloc] init];
+                            [uploadManager uploadActivity];
                         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                             NSLog(@"%@", error);
                             [self.activityIndicator stopAnimating];
@@ -71,8 +74,6 @@
                                                    initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding]
                                                    options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
                                                    documentAttributes:nil error:nil];
-    [attributedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:16]
-                             range:NSMakeRange(0, attributedString.length)];
     self.activityBodyTextView.text = @"";
     self.activityBodyTextView.attributedText = attributedString;
     self.activityBodyTextView.textAlignment = NSTextAlignmentJustified;
