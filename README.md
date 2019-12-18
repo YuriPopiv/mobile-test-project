@@ -14,3 +14,13 @@
 
 
 * Also, we left comments in the code for easier understanding how it works
+
+
+## iOS project ##
+
+### What was used ###
+
+* MVC architecture
+* AFNetworking for working with API
+* Mantle for working with Models
+* Realm for storing activities locally on the device
